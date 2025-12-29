@@ -16,7 +16,8 @@ get_port() {
 }
 
 open_browser() {
-    local url="http://localhost:$(get_port)"
+    local url
+    url="http://localhost:$(get_port)"
     case "$(uname -s)" in
         Darwin)  open "$url" ;;
         Linux)   xdg-open "$url" 2>/dev/null || echo "Open: $url" ;;
