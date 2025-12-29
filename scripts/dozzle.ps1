@@ -1,10 +1,10 @@
 # Dozzle Container Monitor Management Script
 # Usage: .\dozzle.ps1 <command>
-# Commands: start, stop, restart, status, logs
+# Commands: start, stop, restart, status, logs, pull, open
 
 param(
     [Parameter(Position=0)]
-    [ValidateSet("start", "stop", "restart", "status", "logs", "help")]
+    [ValidateSet("start", "stop", "restart", "status", "logs", "pull", "open", "help")]
     [string]$Command = "help"
 )
 
@@ -39,6 +39,14 @@ switch ($Command) {
     "logs" {
         docker compose logs -f
     }
+    "pull" {
+        docker compose pull
+        Write-Host "Dozzle image updated" -ForegroundColor Green
+    }
+    "open" {
+        $port = Get-DozzlePort
+        Start-Process "http://localhost:$port"
+    }
     "help" {
         Write-Host @"
 Dozzle Container Monitor
@@ -51,6 +59,8 @@ Commands:
   restart   Restart container
   status    Show container status
   logs      Follow container logs
+  pull      Pull latest image
+  open      Open web UI in browser
   help      Show this help message
 "@
     }

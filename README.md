@@ -27,17 +27,20 @@ Edit `.env` to customize settings (optional).
 ### 2. Start
 
 **Windows (PowerShell):**
+
 ```powershell
 .\scripts\dozzle.ps1 start
 ```
 
 **Linux/macOS:**
+
 ```bash
 chmod +x scripts/dozzle.sh
 ./scripts/dozzle.sh start
 ```
 
 **Or directly with Docker Compose:**
+
 ```bash
 docker compose up -d
 ```
@@ -57,6 +60,8 @@ Management scripts are available for Windows and Linux/macOS:
 | `restart` | Restart container         |
 | `status`  | Show container status     |
 | `logs`    | Follow container logs     |
+| `pull`    | Pull latest image         |
+| `open`    | Open web UI in browser    |
 | `help`    | Show available commands   |
 
 **Windows:**
@@ -75,14 +80,14 @@ Management scripts are available for Windows and Linux/macOS:
 
 All settings are configured via environment variables in `.env`:
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `DOZZLE_PORT` | `9999` | Web UI port |
-| `DOZZLE_HOSTNAME` | `localhost` | Display name in UI |
-| `DOZZLE_ENABLE_ACTIONS` | `true` | Allow start/stop/restart |
-| `DOZZLE_ENABLE_SHELL` | `true` | Allow shell access |
-| `DOZZLE_NO_ANALYTICS` | `true` | Disable usage tracking |
-| `DOZZLE_AUTH_PROVIDER` | `none` | Authentication mode |
+| Variable                | Default     | Description             |
+| ----------------------- | ----------- | ----------------------- |
+| `DOZZLE_PORT`           | `9999`      | Web UI port             |
+| `DOZZLE_HOSTNAME`       | `localhost` | Display name in UI      |
+| `DOZZLE_ENABLE_ACTIONS` | `true`      | Allow start/stop/restart |
+| `DOZZLE_ENABLE_SHELL`   | `true`      | Allow shell access      |
+| `DOZZLE_NO_ANALYTICS`   | `true`      | Disable usage tracking  |
+| `DOZZLE_AUTH_PROVIDER`  | `none`      | Authentication mode     |
 
 See [.env.example](.env.example) for all options.
 
@@ -91,18 +96,21 @@ See [.env.example](.env.example) for all options.
 To enable user authentication:
 
 1. Generate a password hash:
+
    ```bash
    docker run -it --rm amir20/dozzle generate admin --password YourPassword --email admin@example.com
    ```
 
 2. Copy and edit the users file:
+
    ```bash
    cp data/users.yml.example data/users.yml
    # Add the generated hash to users.yml
    ```
 
 3. Enable authentication in `.env`:
-   ```
+
+   ```bash
    DOZZLE_AUTH_PROVIDER=simple
    ```
 

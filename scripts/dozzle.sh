@@ -1,17 +1,27 @@
 #!/bin/bash
 # Dozzle Container Monitor Management Script
 # Usage: ./dozzle.sh <command>
-# Commands: start, stop, restart, status, logs
+# Commands: start, stop, restart, status, logs, pull, open
 
 set -e
 cd "$(dirname "$0")/.."
 
 get_port() {
     if [[ -f .env ]]; then
-        grep -oP 'DOZZLE_PORT=\K\d+' .env 2>/dev/null || echo "9999"
+        # POSIX-compatible (works on macOS and Linux)
+        grep '^DOZZLE_PORT=' .env 2>/dev/null | cut -d'=' -f2 || echo "9999"
     else
         echo "9999"
     fi
+}
+
+open_browser() {
+    local url="http://localhost:$(get_port)"
+    case "$(uname -s)" in
+        Darwin)  open "$url" ;;
+        Linux)   xdg-open "$url" 2>/dev/null || echo "Open: $url" ;;
+        *)       echo "Open: $url" ;;
+    esac
 }
 
 case "${1:-help}" in
@@ -33,6 +43,13 @@ case "${1:-help}" in
     logs)
         docker compose logs -f
         ;;
+    pull)
+        docker compose pull
+        echo -e "\033[32mDozzle image updated\033[0m"
+        ;;
+    open)
+        open_browser
+        ;;
     help|*)
         cat <<EOF
 Dozzle Container Monitor
@@ -45,6 +62,8 @@ Commands:
   restart   Restart container
   status    Show container status
   logs      Follow container logs
+  pull      Pull latest image
+  open      Open web UI in browser
   help      Show this help message
 EOF
         ;;

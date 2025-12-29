@@ -5,3 +5,7 @@
 
 # Environment files
 .env
+
+# User data (auth, settings)
+data/*
+!data/*.example
