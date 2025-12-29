@@ -1,0 +1,27 @@
+# Dozzle User Configuration
+# https://dozzle.dev/guide/authentication
+#
+# To enable authentication:
+# 1. Copy this file to users.yml
+# 2. Set DOZZLE_AUTH_PROVIDER=simple in .env
+# 3. Uncomment the data volume mount in docker-compose.yml
+#
+# Generate password hash:
+#   docker run -it --rm amir20/dozzle generate <username> --password <password> --email <email>
+#
+# Example:
+#   docker run -it --rm amir20/dozzle generate admin --password secret123 --email admin@example.com
+
+users:
+  # Admin user (full access)
+  admin:
+    name: "Administrator"
+    email: admin@example.com
+    # Password: admin123 (CHANGE THIS!)
+    password: $2a$10$Q7Z3Z3Z3Z3Z3Z3Z3Z3Z3ZuQ7Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3
+
+  # Developer user example
+  # developer:
+  #   name: "Developer"
+  #   email: dev@example.com
+  #   password: $2a$10$... # Generate with docker command above

@@ -1,0 +1,50 @@
+###############################################################################
+# Dozzle - Developer Container Monitor
+# Real-time log viewer for Docker containers
+# https://dozzle.dev
+###############################################################################
+
+services:
+  dozzle:
+    image: amir20/dozzle:${DOZZLE_VERSION:-latest}
+    container_name: dozzle
+    restart: unless-stopped
+
+    environment:
+      # General Settings
+      - TZ=${TIME_ZONE:-UTC}
+      - DOZZLE_HOSTNAME=${DOZZLE_HOSTNAME:-localhost}
+      - DOZZLE_LEVEL=${DOZZLE_LOG_LEVEL:-info}
+
+      # Feature Toggles
+      - DOZZLE_ENABLE_ACTIONS=${DOZZLE_ENABLE_ACTIONS:-true}
+      - DOZZLE_ENABLE_SHELL=${DOZZLE_ENABLE_SHELL:-true}
+      - DOZZLE_NO_ANALYTICS=${DOZZLE_NO_ANALYTICS:-true}
+
+      # Authentication (optional - disabled by default)
+      # Set DOZZLE_AUTH_PROVIDER to 'simple' and mount users.yml to enable
+      - DOZZLE_AUTH_PROVIDER=${DOZZLE_AUTH_PROVIDER:-none}
+      - DOZZLE_AUTH_TTL=${DOZZLE_AUTH_TTL:-24h}
+
+      # Remote Agent (optional - disabled by default)
+      # - DOZZLE_REMOTE_AGENT=${DOZZLE_REMOTE_AGENT:-}
+
+    volumes:
+      # Docker socket (read-write required for actions and shell)
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      # Data directory for authentication (optional)
+      # Uncomment if using file-based authentication
+      # - ${DOZZLE_DATA_PATH:-./data}:/data:ro
+
+    ports:
+      - "${DOZZLE_PORT:-9999}:8080"
+
+    # Healthcheck (optional - adds CPU overhead)
+    # Uncomment to enable container health monitoring
+    # healthcheck:
+    #   test: ["CMD", "/dozzle", "healthcheck"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 10s
