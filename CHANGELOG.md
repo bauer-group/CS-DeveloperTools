@@ -1,3 +1,11 @@
+# [0.2.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.1.0...v0.2.0) (2025-12-30)
+
+
+### Features
+
+* Add scripts for Git commit message rewriting, repository splitting, and statistics ([0399aa5](https://github.com/bauer-group/CS-DeveloperTools/commit/0399aa55040f033179a41399fce18d72178e2c58))
+* Enhance DevTools with new GitHub workflow management features ([ff38943](https://github.com/bauer-group/CS-DeveloperTools/commit/ff3894334b60f8ba4997888310ffa2abe3fe6717))
+
 # [0.1.0](https://github.com/bauer-group/CS-DeveloperMonitor/compare/v0.0.0...v0.1.0) (2025-12-29)
 
 
