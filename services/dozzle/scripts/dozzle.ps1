@@ -1,6 +1,7 @@
+# =============================================================================
 # Dozzle Container Monitor Management Script
 # Usage: .\dozzle.ps1 <command>
-# Commands: start, stop, restart, status, logs, pull, open
+# =============================================================================
 
 param(
     [Parameter(Position=0)]
@@ -9,11 +10,16 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-Set-Location $PSScriptRoot\..
+
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$DozzleDir = Split-Path -Parent $ScriptDir
+
+Set-Location $DozzleDir
 
 function Get-DozzlePort {
-    if (Test-Path .env) {
-        $match = Select-String -Path .env -Pattern 'DOZZLE_PORT=(\d+)' -ErrorAction SilentlyContinue
+    $envFile = Join-Path $DozzleDir ".env"
+    if (Test-Path $envFile) {
+        $match = Select-String -Path $envFile -Pattern 'DOZZLE_PORT=(\d+)' -ErrorAction SilentlyContinue
         if ($match) { return $match.Matches.Groups[1].Value }
     }
     return "9999"
@@ -62,6 +68,9 @@ Commands:
   pull      Pull latest image
   open      Open web UI in browser
   help      Show this help message
+
+Configuration:
+  Edit .env in this directory to customize settings.
 "@
     }
 }

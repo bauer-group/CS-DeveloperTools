@@ -1,14 +1,18 @@
 #!/bin/bash
+# =============================================================================
 # Dozzle Container Monitor Management Script
 # Usage: ./dozzle.sh <command>
-# Commands: start, stop, restart, status, logs, pull, open
+# =============================================================================
 
 set -e
-cd "$(dirname "$0")/.."
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOZZLE_DIR="$(dirname "$SCRIPT_DIR")"
+
+cd "$DOZZLE_DIR"
 
 get_port() {
     if [[ -f .env ]]; then
-        # POSIX-compatible (works on macOS and Linux)
         grep '^DOZZLE_PORT=' .env 2>/dev/null | cut -d'=' -f2 || echo "9999"
     else
         echo "9999"
@@ -16,8 +20,7 @@ get_port() {
 }
 
 open_browser() {
-    local url
-    url="http://localhost:$(get_port)"
+    local url="http://localhost:$(get_port)"
     case "$(uname -s)" in
         Darwin)  open "$url" ;;
         Linux)   xdg-open "$url" 2>/dev/null || echo "Open: $url" ;;
@@ -66,6 +69,9 @@ Commands:
   pull      Pull latest image
   open      Open web UI in browser
   help      Show this help message
+
+Configuration:
+  Edit .env in this directory to customize settings.
 EOF
         ;;
 esac

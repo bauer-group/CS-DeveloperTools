@@ -19,9 +19,3 @@ users:
     email: admin@example.com
     # Password: admin123 (CHANGE THIS!)
     password: $2a$10$Q7Z3Z3Z3Z3Z3Z3Z3Z3Z3ZuQ7Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3Z3
-
-  # Developer user example
-  # developer:
-  #   name: "Developer"
-  #   email: dev@example.com
-  #   password: $2a$10$... # Generate with docker command above

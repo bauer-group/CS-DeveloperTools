@@ -1,132 +1,242 @@
-# Developer Tools
+# DevTools - Swiss Army Knife for Git-based Development
 
-Real-time Docker container log viewer and management tool for developers using Docker Desktop.
+A collection of Docker-based developer tools for Git workflows and development automation. All tools run in isolated containers for platform independence.
 
-Based on [Dozzle](https://dozzle.dev) - a lightweight, web-based Docker log viewer.
+## Services
 
-## Features
+This repository contains independent tools that can be used separately:
 
-- **Real-time log streaming** - View container logs as they happen
-- **Container management** - Start, stop, and restart containers from the UI
-- **Shell access** - Execute commands directly in containers
-- **SQL queries** - Query JSON logs using SQL syntax (DuckDB in browser)
-- **Multi-container view** - Monitor multiple containers simultaneously
-- **Search & filter** - Find specific log entries quickly
-- **Dark/Light mode** - Comfortable viewing in any environment
+| Service | Description | Location |
+|---------|-------------|----------|
+| **DevTools** | Git & Python runtime container | `./devtools.sh` |
+| **Dozzle** | Docker container log viewer | `services/dozzle/` |
 
-## Quick Start
+## DevTools Runtime Container
 
-### 1. Configure
+Interactive container with Git, Python 3.12, and shell utilities for Git-based development workflows.
 
-```bash
-cp .env.example .env
-```
+### Features
 
-Edit `.env` to customize settings (optional).
+- **Git Tools** - Advanced Git commands, statistics, history rewriting, and automation
+- **GitHub Tools** - Repository management, topics, archiving, and workflow triggers
+- **Python Environment** - Full Python 3.12 with common libraries (GitPython, Click, Rich, etc.)
+- **Shell Utilities** - curl, jq, yq, git-filter-repo, GitHub CLI, and more
+- **Platform Independent** - Runs identically on Windows, macOS, and Linux
+- **Auto-configured** - Git credentials from host, helpful aliases pre-installed
 
-### 2. Start
-
-**Windows (PowerShell):**
+### Quick Start
 
 ```powershell
-.\scripts\dozzle.ps1 start
+# Build the container
+.\devtools.ps1 build
+
+# Start interactive shell in current directory
+.\devtools.ps1 shell
+
+# Start shell in a specific project
+.\devtools.ps1 shell C:\Projects\MyApp
 ```
 
-**Linux/macOS:**
+### Commands
+
+#### Runtime Container
+
+| Command | Description |
+|---------|-------------|
+| `shell [PATH]` | Start interactive DevTools shell |
+| `run <script>` | Run a script in the container |
+| `build` | Build/rebuild DevTools container |
+
+#### Git Tools
+
+| Command | Description |
+|---------|-------------|
+| `stats [PATH]` | Show repository statistics |
+| `cleanup [PATH]` | Clean up branches and cache |
+| `changelog` | Generate changelog from commits |
+| `release` | Manage semantic versioning releases |
+| `lfs-migrate` | Migrate repository to Git LFS |
+| `history-clean` | Remove large files from git history |
+| `branch-rename` | Rename git branches (local + remote) |
+| `split-repo` | Split monorepo into separate repos |
+| `rewrite-commits` | Rewrite commit messages (pattern-based) |
+
+#### GitHub Tools
+
+| Command | Description |
+|---------|-------------|
+| `gh-create` | Create GitHub repository |
+| `gh-topics` | Manage repository topics |
+| `gh-archive` | Archive repositories by criteria |
+| `gh-workflow` | Trigger GitHub Actions workflows |
+
+### Tool Details
+
+#### Git History Tools
 
 ```bash
-chmod +x scripts/dozzle.sh
+# Remove large files from history (requires git-filter-repo)
+./devtools.sh history-clean --analyze              # Show large files
+./devtools.sh history-clean -s 50M --dry-run       # Preview cleanup
+
+# Rename branches (master → main)
+./devtools.sh branch-rename --master-to-main       # Full migration
+./devtools.sh branch-rename old-name new-name      # Custom rename
+
+# Split monorepo into separate repos
+./devtools.sh split-repo dir1,dir2 -o myorg        # Split to GitHub
+./devtools.sh split-repo services/api --submodule  # Keep as submodule
+
+# Rewrite commit messages (remove AI attributions, etc.)
+./devtools.sh rewrite-commits --preset claude --dry-run
+./devtools.sh rewrite-commits --preset ai-all
+./devtools.sh rewrite-commits -p "TICKET-\d+:\s*"  # Custom pattern
+```
+
+#### GitHub Management Tools
+
+```bash
+# Create repository
+./devtools.sh gh-create myrepo --public --init
+./devtools.sh gh-create -o myorg myrepo -t "python,cli" --license MIT
+
+# Manage topics across repos
+./devtools.sh gh-topics -o myorg --analyze           # Topic statistics
+./devtools.sh gh-topics -o myorg --add python,api    # Add to all repos
+./devtools.sh gh-topics myorg/repo --sync cli,tool   # Ensure topics exist
+
+# Archive inactive repositories
+./devtools.sh gh-archive -o myorg --inactive 365 --dry-run
+./devtools.sh gh-archive -o myorg --empty            # Archive empty repos
+./devtools.sh gh-archive myorg/old-repo              # Archive single repo
+
+# Trigger GitHub Actions
+./devtools.sh gh-workflow myorg/repo --list          # List workflows
+./devtools.sh gh-workflow myorg/repo ci.yml          # Trigger workflow
+./devtools.sh gh-workflow myorg/repo deploy.yml -i env=prod --wait
+```
+
+### Inside the Container
+
+**Shell Scripts:**
+- `git-stats.sh` - Comprehensive repository statistics
+- `git-cleanup.sh` - Clean up merged/stale branches
+- `git-lfs-migrate.sh` - LFS migration with 100+ file patterns
+- `git-history-clean.sh` - Remove large files from history
+- `git-branch-rename.sh` - Rename branches with remote sync
+- `gh-create-repo.sh` - Create GitHub repositories
+- `gh-trigger-workflow.sh` - Trigger GitHub Actions
+- `help-devtools` - Show all available commands
+
+**Python Tools:**
+- `git-changelog.py` - Generate changelog from commits
+- `git-release.py` - Semantic versioning release manager
+- `git-split-repo.py` - Split monorepo into separate repos
+- `git-rewrite-commits.py` - Pattern-based commit message rewriting
+- `gh-topic-manager.py` - Manage repository topics
+- `gh-archive-repos.py` - Archive repositories by criteria
+
+**Pre-configured Git Aliases:**
+| Alias | Command |
+|-------|---------|
+| `git st` | `status -sb` |
+| `git lg` | Log graph (20 commits) |
+| `git lga` | Full log graph, all branches |
+| `git branches` | List branches by date |
+| `git last` | Show last commit |
+| `git undo` | Soft reset last commit |
+| `git amend` | Amend last commit |
+
+### Examples
+
+```bash
+# Repository statistics
+./devtools.sh stats
+
+# Clean up branches (preview)
+./devtools.sh cleanup --dry-run
+
+# Generate changelog
+./devtools.sh run "git-changelog.py -o CHANGELOG.md"
+
+# Interactive release
+./devtools.sh release release
+
+# Migrate to LFS
+./devtools.sh lfs-migrate --dry-run
+./devtools.sh lfs-migrate --push
+```
+
+---
+
+## Dozzle - Container Monitor
+
+Independent Docker container log viewer. See [services/dozzle/README.md](services/dozzle/README.md) for details.
+
+### Quick Start
+
+```bash
+cd services/dozzle
+cp .env.example .env
 ./scripts/dozzle.sh start
 ```
 
-**Or directly with Docker Compose:**
+---
 
-```bash
-docker compose up -d
+## Project Structure
+
+```
+DeveloperTools/
+├── devtools.sh              # DevTools CLI (Linux/macOS)
+├── devtools.ps1             # DevTools CLI (Windows)
+│
+├── services/
+│   ├── devtools/            # DevTools Runtime Container
+│   │   ├── Dockerfile
+│   │   ├── entrypoint.sh
+│   │   ├── requirements.txt
+│   │   └── scripts/
+│   │       ├── git-stats.sh
+│   │       ├── git-cleanup.sh
+│   │       ├── git-changelog.py
+│   │       ├── git-release.py
+│   │       ├── git-lfs-migrate.sh
+│   │       ├── git-history-clean.sh
+│   │       ├── git-branch-rename.sh
+│   │       ├── git-split-repo.py
+│   │       ├── git-rewrite-commits.py
+│   │       ├── gh-create-repo.sh
+│   │       ├── gh-topic-manager.py
+│   │       ├── gh-archive-repos.py
+│   │       ├── gh-trigger-workflow.sh
+│   │       └── help-devtools
+│   │
+│   └── dozzle/              # Container Monitor (independent)
+│       ├── docker-compose.yml
+│       ├── .env.example
+│       ├── README.md
+│       ├── data/
+│       │   └── users.yml.example
+│       └── scripts/
+│           ├── dozzle.sh
+│           └── dozzle.ps1
+│
+└── .github/                 # CI/CD workflows
 ```
 
-### 3. Access
+## Adding New Tools
 
-Open [http://localhost:9999](http://localhost:9999) in your browser.
-
-## Scripts
-
-Management scripts are available for Windows and Linux/macOS:
-
-| Command   | Description               |
-| --------- | ------------------------- |
-| `start`   | Start Dozzle container    |
-| `stop`    | Stop and remove container |
-| `restart` | Restart container         |
-| `status`  | Show container status     |
-| `logs`    | Follow container logs     |
-| `pull`    | Pull latest image         |
-| `open`    | Open web UI in browser    |
-| `help`    | Show available commands   |
-
-**Windows:**
-
-```powershell
-.\scripts\dozzle.ps1 <command>
-```
-
-**Linux/macOS:**
-
-```bash
-./scripts/dozzle.sh <command>
-```
-
-## Configuration
-
-All settings are configured via environment variables in `.env`:
-
-| Variable                | Default     | Description              |
-| ----------------------- | ----------- | ------------------------ |
-| `DOZZLE_PORT`           | `9999`      | Web UI port              |
-| `DOZZLE_HOSTNAME`       | `localhost` | Display name in UI       |
-| `DOZZLE_ENABLE_ACTIONS` | `true`      | Allow start/stop/restart |
-| `DOZZLE_ENABLE_SHELL`   | `true`      | Allow shell access       |
-| `DOZZLE_NO_ANALYTICS`   | `true`      | Disable usage tracking   |
-| `DOZZLE_AUTH_PROVIDER`  | `none`      | Authentication mode      |
-
-See [.env.example](.env.example) for all options.
-
-## Authentication (Optional)
-
-To enable user authentication:
-
-1. Generate a password hash:
-
-   ```bash
-   docker run -it --rm amir20/dozzle generate admin --password YourPassword --email admin@example.com
-   ```
-
-2. Copy and edit the users file:
-
-   ```bash
-   cp data/users.yml.example data/users.yml
-   # Add the generated hash to users.yml
-   ```
-
-3. Enable authentication in `.env`:
-
-   ```bash
-   DOZZLE_AUTH_PROVIDER=simple
-   ```
-
-4. Uncomment the data volume in `docker-compose.yml`
+1. Add scripts to `services/devtools/scripts/`
+2. Make them executable in the Dockerfile
+3. Add Python dependencies to `requirements.txt`
+4. Update `help-devtools` with new commands
+5. Add CLI integration to `devtools.sh` and `devtools.ps1`
 
 ## Requirements
 
 - Docker Desktop (Windows/macOS) or Docker Engine (Linux)
-- Docker Compose v2+
-
-## Documentation
-
-- [Dozzle Documentation](https://dozzle.dev)
-- [Container Actions](https://dozzle.dev/guide/actions)
-- [Shell Access](https://dozzle.dev/guide/shell)
-- [Authentication](https://dozzle.dev/guide/authentication)
+- Docker Compose v2+ (for Dozzle)
+- GitHub CLI (`gh`) for GitHub tools (installed in container)
 
 ## License
 
