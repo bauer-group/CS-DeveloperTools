@@ -72,6 +72,19 @@ Interactive container with Git, Python 3.12, and shell utilities for Git-based d
 | `gh-add-workflow` | Add workflow files to repositories |
 | `gh-clean-releases` | Clean releases and tags |
 | `gh-visibility` | Change repo visibility (public/private) |
+| `gh-clone-org` | Clone all repos from organization |
+| `gh-sync-forks` | Sync forked repos with upstream |
+| `gh-pr-cleanup` | Clean stale PRs and branches |
+| `gh-secrets-audit` | Audit secrets across repos |
+| `gh-labels-sync` | Sync labels between repos |
+| `gh-branch-protect` | Manage branch protection rules |
+
+#### Advanced Git Tools
+
+| Command | Description |
+|---------|-------------|
+| `git-mirror` | Mirror repo between Git servers |
+| `git-contributors` | Show contributor statistics |
 
 ### Tool Details
 
@@ -133,6 +146,55 @@ Interactive container with Git, Python 3.12, and shell utilities for Git-based d
 ./devtools.sh gh-visibility -o myorg --current private --list
 ```
 
+#### Organization & Repository Management
+
+```bash
+# Clone all repos from organization
+./devtools.sh gh-clone-org myorg -o ~/backup/myorg
+./devtools.sh gh-clone-org myorg -t python --shallow     # Only Python repos
+./devtools.sh gh-clone-org myorg --pull                  # Update existing clones
+
+# Sync forked repos with upstream
+./devtools.sh gh-sync-forks --list                       # Show fork status
+./devtools.sh gh-sync-forks myuser/my-fork               # Sync single fork
+./devtools.sh gh-sync-forks --all --behind               # Sync all behind forks
+
+# Clean stale PRs and branches
+./devtools.sh gh-pr-cleanup myorg/repo --list --stale-days 30
+./devtools.sh gh-pr-cleanup myorg/repo --close-stale --stale-days 60
+./devtools.sh gh-pr-cleanup myorg/repo --delete-merged-branches
+
+# Audit secrets across repos
+./devtools.sh gh-secrets-audit -o myorg                  # Audit all repos
+./devtools.sh gh-secrets-audit -o myorg --compare        # Compare coverage
+./devtools.sh gh-secrets-audit myorg/repo --all          # Include Dependabot/envs
+
+# Sync labels between repos
+./devtools.sh gh-labels-sync source/repo target/repo
+./devtools.sh gh-labels-sync --preset standard myorg/repo
+./devtools.sh gh-labels-sync source/repo --export > labels.json
+
+# Manage branch protection
+./devtools.sh gh-branch-protect myorg/repo --list
+./devtools.sh gh-branch-protect myorg/repo main --preset strict
+./devtools.sh gh-branch-protect --org myorg --branch main --preset standard
+```
+
+#### Mirror & Statistics Tools
+
+```bash
+# Mirror repo between servers
+./devtools.sh git-mirror source.git target.git
+./devtools.sh git-mirror source.git target.git --force --lfs
+./devtools.sh git-mirror source.git target.git --wiki
+
+# Contributor statistics
+./devtools.sh git-contributors                           # Current repo
+./devtools.sh git-contributors --since "30 days ago"
+./devtools.sh git-contributors --detailed --activity
+./devtools.sh git-contributors --json > contributors.json
+```
+
 ### Inside the Container
 
 **Shell Scripts:**
@@ -141,8 +203,10 @@ Interactive container with Git, Python 3.12, and shell utilities for Git-based d
 - `git-lfs-migrate.sh` - LFS migration with 100+ file patterns
 - `git-history-clean.sh` - Remove large files from history
 - `git-branch-rename.sh` - Rename branches with remote sync
+- `git-mirror.sh` - Mirror repositories between Git servers
 - `gh-create-repo.sh` - Create GitHub repositories
 - `gh-trigger-workflow.sh` - Trigger GitHub Actions
+- `gh-clone-org.sh` - Clone all repos from organization
 - `help-devtools` - Show all available commands
 
 **Python Tools:**
@@ -150,11 +214,17 @@ Interactive container with Git, Python 3.12, and shell utilities for Git-based d
 - `git-release.py` - Semantic versioning release manager
 - `git-split-repo.py` - Split monorepo into separate repos
 - `git-rewrite-commits.py` - Pattern-based commit message rewriting
+- `git-contributors.py` - Contributor statistics with activity patterns
 - `gh-topic-manager.py` - Manage repository topics
 - `gh-archive-repos.py` - Archive repositories by criteria
 - `gh-add-workflow.py` - Add workflow files to repos
 - `gh-clean-releases.py` - Clean releases and tags
 - `gh-visibility.py` - Change repository visibility
+- `gh-sync-forks.py` - Sync forked repos with upstream
+- `gh-pr-cleanup.py` - Clean stale PRs and branches
+- `gh-secrets-audit.py` - Audit secrets across repos
+- `gh-labels-sync.py` - Sync labels between repos
+- `gh-branch-protection.py` - Manage branch protection rules
 
 **Pre-configured Git Aliases:**
 | Alias | Command |
@@ -232,6 +302,14 @@ DeveloperTools/
 │   │       ├── gh-add-workflow.py
 │   │       ├── gh-clean-releases.py
 │   │       ├── gh-visibility.py
+│   │       ├── gh-clone-org.sh
+│   │       ├── gh-sync-forks.py
+│   │       ├── gh-pr-cleanup.py
+│   │       ├── gh-secrets-audit.py
+│   │       ├── gh-labels-sync.py
+│   │       ├── gh-branch-protection.py
+│   │       ├── git-mirror.sh
+│   │       ├── git-contributors.py
 │   │       └── help-devtools
 │   │
 │   └── dozzle/              # Container Monitor (independent)

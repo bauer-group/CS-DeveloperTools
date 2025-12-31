@@ -56,6 +56,16 @@ show_help() {
     echo "    gh-add-workflow [opts]  Add workflow files to repos"
     echo "    gh-clean-releases       Clean releases and tags"
     echo "    gh-visibility [opts]    Change repo visibility (public/private)"
+    echo "    gh-clone-org [opts]     Clone all repos from organization"
+    echo "    gh-sync-forks [opts]    Sync forked repos with upstream"
+    echo "    gh-pr-cleanup [opts]    Clean stale PRs and branches"
+    echo "    gh-secrets-audit [opts] Audit secrets across repos"
+    echo "    gh-labels-sync [opts]   Sync labels between repos"
+    echo "    gh-branch-protect [opt] Manage branch protection rules"
+    echo ""
+    echo -e "  ${CYAN}Git Advanced Tools (via container):${NC}"
+    echo "    git-mirror [options]    Mirror repo between servers"
+    echo "    git-contributors [opts] Show contributor statistics"
     echo ""
     echo -e "  ${CYAN}General:${NC}"
     echo "    help                    Show this help"
@@ -231,6 +241,46 @@ gh_visibility() {
     run_script "gh-visibility.py" "$@"
 }
 
+# GitHub Clone Org
+gh_clone_org() {
+    run_script "gh-clone-org.sh" "$@"
+}
+
+# GitHub Sync Forks
+gh_sync_forks() {
+    run_script "gh-sync-forks.py" "$@"
+}
+
+# GitHub PR Cleanup
+gh_pr_cleanup() {
+    run_script "gh-pr-cleanup.py" "$@"
+}
+
+# GitHub Secrets Audit
+gh_secrets_audit() {
+    run_script "gh-secrets-audit.py" "$@"
+}
+
+# GitHub Labels Sync
+gh_labels_sync() {
+    run_script "gh-labels-sync.py" "$@"
+}
+
+# GitHub Branch Protection
+gh_branch_protection() {
+    run_script "gh-branch-protection.py" "$@"
+}
+
+# Git Mirror
+git_mirror() {
+    run_script "git-mirror.sh" "$@"
+}
+
+# Git Contributors
+git_contributors() {
+    run_script "git-contributors.py" "$@"
+}
+
 # Version
 show_version() {
     echo -e "${BOLD}DevTools${NC} v1.0.0"
@@ -238,8 +288,8 @@ show_version() {
     echo ""
     echo "Components:"
     echo "  - DevTools Runtime Container (Git, Python, Shell)"
-    echo "  - Git Tools (stats, cleanup, changelog, release, lfs-migrate, history-clean, branch-rename, split-repo, rewrite-commits)"
-    echo "  - GitHub Tools (gh-create, gh-topics, gh-archive, gh-workflow, gh-add-workflow, gh-clean-releases, gh-visibility)"
+    echo "  - Git Tools (stats, cleanup, changelog, release, lfs-migrate, history-clean, branch-rename, split-repo, rewrite-commits, mirror, contributors)"
+    echo "  - GitHub Tools (gh-create, gh-topics, gh-archive, gh-workflow, gh-add-workflow, gh-clean-releases, gh-visibility, gh-clone-org, gh-sync-forks, gh-pr-cleanup, gh-secrets-audit, gh-labels-sync, gh-branch-protect)"
 }
 
 # Hauptlogik
@@ -305,6 +355,30 @@ main() {
             ;;
         gh-visibility)
             gh_visibility "$@"
+            ;;
+        gh-clone-org)
+            gh_clone_org "$@"
+            ;;
+        gh-sync-forks)
+            gh_sync_forks "$@"
+            ;;
+        gh-pr-cleanup)
+            gh_pr_cleanup "$@"
+            ;;
+        gh-secrets-audit)
+            gh_secrets_audit "$@"
+            ;;
+        gh-labels-sync)
+            gh_labels_sync "$@"
+            ;;
+        gh-branch-protect|gh-branch-protection)
+            gh_branch_protection "$@"
+            ;;
+        git-mirror|mirror)
+            git_mirror "$@"
+            ;;
+        git-contributors|contributors)
+            git_contributors "$@"
             ;;
         version|--version|-v)
             show_version
