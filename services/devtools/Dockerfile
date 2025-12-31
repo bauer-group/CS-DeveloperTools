@@ -1,14 +1,29 @@
 # =============================================================================
 # DevTools Runtime Container
 # Git-focused development tools with Python support
-# Plattformunabhängiger Container für Git-Operationen und Entwicklungstools
+# Platform-independent container for Git operations and development tools
 # =============================================================================
 
-FROM python:3.23-alpine
+FROM python:3.13-alpine
 
-LABEL maintainer="Bauer Group"
-LABEL description="Swiss Army Knife for Git-based Development"
-LABEL version="1.0.0"
+# =============================================================================
+# Custom Labels
+# =============================================================================
+
+# Metadata
+LABEL vendor="BAUER GROUP"
+LABEL maintainer="Karl Bauer <karl.bauer@bauer-group.com>"
+
+# Opencontainers Metadata
+LABEL org.opencontainers.image.title="DevTools"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.vendor="BAUER GROUP"
+LABEL org.opencontainers.image.authors="Karl Bauer <karl.bauer@bauer-group.com>"
+LABEL org.opencontainers.image.source="https://github.com/bauer-group/CS-DeveloperTools"
+LABEL org.opencontainers.image.url="https://github.com/bauer-group/CS-DeveloperTools"
+LABEL org.opencontainers.image.documentation="https://github.com/bauer-group/CS-DeveloperTools#readme"
+LABEL org.opencontainers.image.description="Swiss Army Knife for Git-based Development"
+LABEL org.opencontainers.image.version="0.0.0"
 
 # =============================================================================
 # System Dependencies
@@ -91,6 +106,7 @@ SHELL ["/bin/bash", "-c"]
 RUN echo 'parse_git_branch() { git branch 2>/dev/null | grep "^*" | sed "s/* //"; }' >> /etc/profile.d/devtools.sh && \
     echo 'export PS1="\[\033[1;34m\]devtools\[\033[0m\]:\[\033[1;32m\]\w\[\033[0m\] \[\033[1;33m\]\$(parse_git_branch)\[\033[0m\]\$ "' >> /etc/profile.d/devtools.sh && \
     echo 'export TERM=xterm-256color' >> /etc/profile.d/devtools.sh && \
+    echo 'export PATH="/opt/devtools:$PATH"' >> /etc/profile.d/devtools.sh && \
     echo 'alias ll="ls -la --color=auto"' >> /etc/profile.d/devtools.sh && \
     echo 'alias la="ls -A --color=auto"' >> /etc/profile.d/devtools.sh && \
     echo 'alias l="ls -CF --color=auto"' >> /etc/profile.d/devtools.sh
