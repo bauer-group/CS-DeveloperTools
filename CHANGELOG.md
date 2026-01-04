@@ -1,3 +1,17 @@
+# [0.4.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.3.1...v0.4.0) (2026-01-04)
+
+
+### Bug Fixes
+
+* Improve Docker check and enhance entrypoint welcome message ([ee1d6ff](https://github.com/bauer-group/CS-DeveloperTools/commit/ee1d6ff6b2f75bbc91a232fffe986360d8739d74))
+* Refactor devtools.cmd and add devtools.ps1 for improved command handling ([52ab0e9](https://github.com/bauer-group/CS-DeveloperTools/commit/52ab0e9793b734e4d1d00b47bae35ffb17e4a340))
+
+
+### Features
+
+* Add devtools.cmd script and remove devtools.ps1 ([cc9fd5c](https://github.com/bauer-group/CS-DeveloperTools/commit/cc9fd5cfe4668a7e46fcf58839cb22be6462c553))
+* Erweiterung der DevTools um neue GitHub- und Git-Befehle sowie Verbesserung der Hilfefunktion ([bd302ac](https://github.com/bauer-group/CS-DeveloperTools/commit/bd302acb9ffbcb174a510ce76e2e97eaeef928c9))
+
 ## [0.3.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.3.0...v0.3.1) (2025-12-31)
 
 
