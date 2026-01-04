@@ -44,8 +44,17 @@ if [ -t 0 ] && [ "$1" = "/bin/bash" ]; then
 
     # Git-Status anzeigen falls im Repository
     if git rev-parse --git-dir > /dev/null 2>&1; then
-        BRANCH=$(git branch --show-current 2>/dev/null || echo "detached")
-        REPO=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo "unknown")
+        BRANCH=$(git branch --show-current 2>/dev/null)
+        if [ -z "$BRANCH" ]; then
+            # Detached HEAD - show short commit hash
+            BRANCH="detached @ $(git rev-parse --short HEAD 2>/dev/null)"
+        fi
+        # Use PROJECT_NAME env var if set, otherwise extract from mount path
+        if [ -n "$PROJECT_NAME" ]; then
+            REPO="$PROJECT_NAME"
+        else
+            REPO=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo "unknown")
+        fi
         echo -e "${CYAN}Repository:${NC} $REPO"
         echo -e "${CYAN}Branch:${NC}     $BRANCH"
 

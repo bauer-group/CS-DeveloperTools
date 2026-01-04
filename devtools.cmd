@@ -67,7 +67,8 @@ echo [INFO] Starting DevTools shell...
 echo [INFO] Mounting: %P%
 for /f "tokens=*" %%i in ('git config --global user.name 2^>nul') do set "GIT_NAME=%%i"
 for /f "tokens=*" %%i in ('git config --global user.email 2^>nul') do set "GIT_EMAIL=%%i"
-docker run -it --rm --name %CONTAINER_NAME% -v "%P%:/workspace" -e "GIT_USER_NAME=%GIT_NAME%" -e "GIT_USER_EMAIL=%GIT_EMAIL%" -w /workspace %IMAGE_NAME%
+for %%i in ("%P%") do set "PROJECT_NAME=%%~nxi"
+docker run -it --rm --name %CONTAINER_NAME% -v "%P%:/workspace" -e "GIT_USER_NAME=%GIT_NAME%" -e "GIT_USER_EMAIL=%GIT_EMAIL%" -e "PROJECT_NAME=%PROJECT_NAME%" -w /workspace %IMAGE_NAME%
 endlocal
 goto :eof
 

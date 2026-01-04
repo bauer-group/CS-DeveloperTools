@@ -137,13 +137,15 @@ function Start-Shell {
     $gitName = git config --global user.name 2>$null
     $gitEmail = git config --global user.email 2>$null
 
+    $projectName = Split-Path -Leaf $ProjectPath
+
     docker run -it --rm `
         --name $ContainerName `
         -v "${ProjectPath}:/workspace" `
         -v /var/run/docker.sock:/var/run/docker.sock `
         -e "GIT_USER_NAME=$gitName" `
         -e "GIT_USER_EMAIL=$gitEmail" `
-        -e "PROJECT_PATH=/workspace" `
+        -e "PROJECT_NAME=$projectName" `
         -w /workspace `
         $ImageName
 }

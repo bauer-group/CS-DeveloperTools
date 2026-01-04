@@ -18,7 +18,7 @@ BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-SCRIPTS_DIR="/opt/devtools"
+SCRIPTS_DIR="/opt/devtools/scripts"
 FILTER_CATEGORY=""
 OUTPUT_JSON=false
 

@@ -128,13 +128,16 @@ start_shell() {
     git_name=$(git config --global user.name 2>/dev/null || echo "")
     git_email=$(git config --global user.email 2>/dev/null || echo "")
 
+    local project_name
+    project_name=$(basename "$project_path")
+
     docker run -it --rm \
         --name "$CONTAINER_NAME" \
         -v "$project_path:/workspace" \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -e "GIT_USER_NAME=$git_name" \
         -e "GIT_USER_EMAIL=$git_email" \
-        -e "PROJECT_PATH=/workspace" \
+        -e "PROJECT_NAME=$project_name" \
         -w /workspace \
         "$IMAGE_NAME"
 }

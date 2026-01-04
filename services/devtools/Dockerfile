@@ -106,7 +106,7 @@ SHELL ["/bin/bash", "-c"]
 RUN echo 'parse_git_branch() { git branch 2>/dev/null | grep "^*" | sed "s/* //"; }' >> /etc/profile.d/devtools.sh && \
     echo 'export PS1="\[\033[1;34m\]devtools\[\033[0m\]:\[\033[1;32m\]\w\[\033[0m\] \[\033[1;33m\]\$(parse_git_branch)\[\033[0m\]\$ "' >> /etc/profile.d/devtools.sh && \
     echo 'export TERM=xterm-256color' >> /etc/profile.d/devtools.sh && \
-    echo 'export PATH="/opt/devtools:$PATH"' >> /etc/profile.d/devtools.sh && \
+    echo 'export PATH="/opt/devtools/bin:/opt/devtools/scripts:$PATH"' >> /etc/profile.d/devtools.sh && \
     echo 'alias ll="ls -la --color=auto"' >> /etc/profile.d/devtools.sh && \
     echo 'alias la="ls -A --color=auto"' >> /etc/profile.d/devtools.sh && \
     echo 'alias l="ls -CF --color=auto"' >> /etc/profile.d/devtools.sh
@@ -114,19 +114,20 @@ RUN echo 'parse_git_branch() { git branch 2>/dev/null | grep "^*" | sed "s/* //"
 # =============================================================================
 # Scripts Directory
 # =============================================================================
-COPY scripts/ /opt/devtools/
-RUN chmod +x /opt/devtools/*.sh /opt/devtools/*.py 2>/dev/null || true
+COPY scripts/ /opt/devtools/scripts/
+RUN chmod +x /opt/devtools/scripts/*.sh /opt/devtools/scripts/*.py 2>/dev/null || true
 
-# Create symlinks without extensions for easier access
-# e.g., git-stats.sh -> git-stats, help-devtools.sh -> help-devtools
-RUN for script in /opt/devtools/*.sh /opt/devtools/*.py; do \
+# Create symlinks without extensions in separate bin directory
+# e.g., /opt/devtools/bin/git-stats -> ../scripts/git-stats.sh
+RUN mkdir -p /opt/devtools/bin && \
+    for script in /opt/devtools/scripts/*.sh /opt/devtools/scripts/*.py; do \
         [ -f "$script" ] || continue; \
         base=$(basename "$script"); \
         name="${base%.*}"; \
-        ln -sf "$base" "/opt/devtools/$name"; \
+        ln -sf "../scripts/$base" "/opt/devtools/bin/$name"; \
     done
 
-ENV PATH="/opt/devtools:${PATH}"
+ENV PATH="/opt/devtools/bin:/opt/devtools/scripts:${PATH}"
 
 # =============================================================================
 # Working Directory
