@@ -94,8 +94,8 @@ function Test-Docker {
 
 # Image bauen falls nötig
 function Ensure-Image {
-    $imageExists = docker image inspect $ImageName 2>&1 | Out-Null; $LASTEXITCODE -eq 0
-    if (-not $imageExists) {
+    docker image inspect $ImageName *>$null
+    if ($LASTEXITCODE -ne 0) {
         Write-Host "[INFO] Building DevTools container..." -ForegroundColor Cyan
         Build-Image
     }
