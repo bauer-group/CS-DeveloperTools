@@ -72,14 +72,14 @@ function Show-Help {
 
 # Docker prüfen
 function Test-Docker {
-    $ErrorActionPreference = "SilentlyContinue"
-    docker info *>$null
-    $ErrorActionPreference = "Stop"
-    if ($LASTEXITCODE -ne 0) {
+    try {
+        docker info 2>&1 | Out-Null
+        return $true
+    }
+    catch {
         Write-Host "[ERROR] Docker is not running. Please start Docker Desktop first." -ForegroundColor Red
         exit 1
     }
-    return $true
 }
 
 # Image bauen falls nötig
@@ -127,12 +127,15 @@ function Start-Shell {
     $gitName = git config --global user.name 2>$null
     $gitEmail = git config --global user.email 2>$null
 
-    # Convert to short path (8.3) to handle spaces in path
-    $ShortPath = (New-Object -ComObject Scripting.FileSystemObject).GetFolder($ProjectPath).ShortPath
-
-    # Use cmd.exe for proper TTY handling on Windows
-    $dockerCmd = "docker run -it --rm --name $ContainerName -v `"$ShortPath`":/workspace -e `"GIT_USER_NAME=$gitName`" -e `"GIT_USER_EMAIL=$gitEmail`" -e `"PROJECT_PATH=/workspace`" -w /workspace $ImageName"
-    cmd /c $dockerCmd
+    docker run -it --rm `
+        --name $ContainerName `
+        -v "${ProjectPath}:/workspace" `
+        -v /var/run/docker.sock:/var/run/docker.sock `
+        -e "GIT_USER_NAME=$gitName" `
+        -e "GIT_USER_EMAIL=$gitEmail" `
+        -e "PROJECT_PATH=/workspace" `
+        -w /workspace `
+        $ImageName
 }
 
 # Script im Container ausführen
