@@ -34,7 +34,7 @@ if [ -d "/root/.gnupg" ]; then
 fi
 
 # Willkommensnachricht nur bei interaktiver Shell
-if [ -t 0 ] && [ "$1" = "/bin/bash" ]; then
+if [ -t 0 ] && [[ "$1" == *"bash"* ]]; then
     echo ""
     echo -e "${GREEN}╔═══════════════════════════════════════════════════════════════╗${NC}"
     echo -e "${GREEN}║              🛠️  DevTools Runtime Container                    ║${NC}"
