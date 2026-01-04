@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.4.0...v0.5.0) (2026-01-04)
+
+
+### Features
+
+* Füge PROJECT_NAME-Umgebungsvariable hinzu und verbessere Git-Statusanzeige ([10ee304](https://github.com/bauer-group/CS-DeveloperTools/commit/10ee304ff8ad76f1c859e8b635020f0e05a44ed6))
+
 # [0.4.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.3.1...v0.4.0) (2026-01-04)
 
 
