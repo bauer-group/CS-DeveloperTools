@@ -278,7 +278,8 @@ cp .env.example .env
 ```
 DeveloperTools/
 ├── devtools.sh              # DevTools CLI (Linux/macOS)
-├── devtools.ps1             # DevTools CLI (Windows)
+├── devtools.ps1             # DevTools CLI (Windows PowerShell)
+├── devtools.cmd             # DevTools CLI (Windows CMD)
 │
 ├── services/
 │   ├── devtools/            # DevTools Runtime Container
@@ -310,7 +311,7 @@ DeveloperTools/
 │   │       ├── gh-branch-protection.py
 │   │       ├── git-mirror.sh
 │   │       ├── git-contributors.py
-│   │       └── help-devtools
+│   │       └── help-devtools.sh
 │   │
 │   └── dozzle/              # Container Monitor (independent)
 │       ├── docker-compose.yml
@@ -327,11 +328,20 @@ DeveloperTools/
 
 ## Adding New Tools
 
-1. Add scripts to `services/devtools/scripts/`
-2. Make them executable in the Dockerfile
-3. Add Python dependencies to `requirements.txt`
-4. Update `help-devtools` with new commands
-5. Add CLI integration to `devtools.sh` and `devtools.ps1`
+1. Add scripts to `services/devtools/scripts/` with metadata header:
+
+   ```bash
+   #!/bin/bash
+   # @name: my-tool
+   # @description: Short description of the tool
+   # @category: git|github
+   # @usage: my-tool [options]
+   ```
+
+2. Add Python dependencies to `requirements.txt` if needed
+3. Rebuild the container: `devtools build`
+4. The tool is automatically discovered by `help-devtools`
+5. Optionally add CLI shortcut to `devtools.sh`, `devtools.ps1`, and `devtools.cmd`
 
 ## Requirements
 
