@@ -1,3 +1,10 @@
+## [0.5.2](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.1...v0.5.2) (2026-01-04)
+
+
+### Bug Fixes
+
+* Improve git status check with timeout for large repositories ([269b2f6](https://github.com/bauer-group/CS-DeveloperTools/commit/269b2f6d420d0f19d177ed1bec07eef3dc6fa6e5))
+
 ## [0.5.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.0...v0.5.1) (2026-01-04)
 
 
