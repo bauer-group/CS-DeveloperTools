@@ -4,7 +4,7 @@
 # Platform-independent container for Git operations and development tools
 # =============================================================================
 
-FROM python:3.13-alpine
+FROM python:3.13-slim-trixie
 
 # =============================================================================
 # Custom Labels
@@ -28,9 +28,8 @@ LABEL org.opencontainers.image.version="0.0.0"
 # =============================================================================
 # System Dependencies
 # =============================================================================
-RUN apk add --no-cache \
-    # Core utilities
-    bash \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    # Core utilities (bash already included in Debian)
     coreutils \
     grep \
     sed \
@@ -38,7 +37,6 @@ RUN apk add --no-cache \
     # Git ecosystem
     git \
     git-lfs \
-    git-fast-import \
     openssh-client \
     gnupg \
     # Security & Crypto
@@ -46,24 +44,29 @@ RUN apk add --no-cache \
     ca-certificates \
     # Build tools (for Python packages)
     gcc \
-    musl-dev \
+    libc6-dev \
     libffi-dev \
     # Network tools
     curl \
     wget \
     # JSON processing
     jq \
-    yq \
-    # Docker CLI (interact with host Docker)
-    docker-cli \
-    docker-cli-compose \
+    # Docker CLI
+    docker.io \
+    docker-compose \
     # Editors
     nano \
-    vim \
+    vim-tiny \
     # Extra utilities
     tree \
     less \
-    ncurses
+    ncurses-bin \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install yq (not in Debian repos, install from GitHub)
+RUN curl -sSL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/local/bin/yq \
+    && chmod +x /usr/local/bin/yq
 
 # =============================================================================
 # Python Dependencies

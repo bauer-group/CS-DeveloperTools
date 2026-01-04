@@ -166,8 +166,8 @@ check_git_repo
 check_lfs_installed
 
 # Standard-Dateierweiterungen für LFS
-declare -a BIN_EXTENSIONS=(
-    # ═══ Microsoft Office ═══
+# Categories: Office, Archive, Images, Audio, Video, Fonts, 3D/CAD, Binaries, Data, Game, ML
+BIN_EXTENSIONS=(
     "*.doc" "*.docx" "*.dot" "*.dotx" "*.docm"
     "*.xls" "*.xlsx" "*.xlsm" "*.xlt" "*.xltx" "*.xlsb"
     "*.ppt" "*.pptx" "*.pps" "*.ppsx" "*.pptm"
@@ -175,64 +175,40 @@ declare -a BIN_EXTENSIONS=(
     "*.pub" "*.pubx"
     "*.msg" "*.pst" "*.ost"
     "*.accdb" "*.accde" "*.mdb"
-
-    # ═══ OpenOffice / LibreOffice ═══
     "*.odt" "*.ott" "*.odm"
     "*.ods" "*.ots"
     "*.odp" "*.otp"
     "*.odg" "*.otg"
     "*.odb" "*.odf"
-
-    # ═══ Installer / Packaging ═══
     "*.msi" "*.msp" "*.mst" "*.msix"
     "*.cab" "*.appx"
     "*.deb" "*.rpm" "*.pkg" "*.dmg"
     "*.snap" "*.flatpak"
-
-    # ═══ Archive formats ═══
     "*.zip" "*.7z" "*.rar" "*.tar"
     "*.gz" "*.tgz" "*.bz2" "*.xz" "*.lz" "*.lzma"
     "*.tar.gz" "*.tar.bz2" "*.tar.xz"
-
-    # ═══ Images ═══
     "*.png" "*.jpg" "*.jpeg" "*.gif" "*.webp"
     "*.tiff" "*.tif" "*.bmp" "*.ico" "*.icns"
     "*.psd" "*.ai" "*.eps" "*.svgz"
     "*.raw" "*.cr2" "*.nef" "*.orf" "*.arw"
     "*.heic" "*.heif"
-
-    # ═══ Audio ═══
     "*.mp3" "*.wav" "*.ogg" "*.flac" "*.aac"
     "*.wma" "*.m4a" "*.aiff" "*.ape"
-
-    # ═══ Video ═══
     "*.mp4" "*.mov" "*.avi" "*.mkv" "*.webm"
     "*.wmv" "*.flv" "*.m4v" "*.mpeg" "*.mpg"
     "*.3gp" "*.ogv"
-
-    # ═══ Fonts ═══
     "*.ttf" "*.otf" "*.woff" "*.woff2" "*.eot"
-
-    # ═══ 3D / CAD ═══
     "*.obj" "*.fbx" "*.blend" "*.3ds" "*.dae"
     "*.stl" "*.step" "*.stp" "*.iges" "*.igs"
     "*.dwg" "*.dxf"
-
-    # ═══ Generic binaries ═══
     "*.bin" "*.dat" "*.dll" "*.exe" "*.so" "*.dylib"
     "*.iso" "*.img" "*.vhd" "*.vhdx" "*.vmdk"
     "*.a" "*.lib" "*.o"
-
-    # ═══ Data formats ═══
     "*.sqlite" "*.sqlite3" "*.db"
     "*.pdf"
     "*.parquet" "*.avro"
-
-    # ═══ Game / Unity / Unreal ═══
     "*.unity" "*.unitypackage" "*.asset"
     "*.uasset" "*.umap"
-
-    # ═══ Machine Learning ═══
     "*.h5" "*.hdf5" "*.onnx" "*.pb"
     "*.pt" "*.pth" "*.pkl" "*.pickle"
     "*.safetensors"
@@ -284,16 +260,17 @@ SKIPPED_COUNT=0
 
 echo -e "${CYAN}Standard patterns:${NC}"
 for ext in "${BIN_EXTENSIONS[@]}"; do
-    # Check if already tracked
-    if [ -f .gitattributes ] && grep -q "^${ext//\*/\\*} " .gitattributes 2>/dev/null; then
-        ((SKIPPED_COUNT++))
+    # Check if already tracked (escape * for grep)
+    escaped_ext=$(printf '%s\n' "$ext" | sed 's/\*/\\*/g')
+    if [ -f .gitattributes ] && grep -q "^${escaped_ext} " .gitattributes 2>/dev/null; then
+        SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
         continue
     fi
 
     if [ "$DRY_RUN" = false ]; then
-        git lfs track "$ext" 2>/dev/null
+        git lfs track "$ext" 2>/dev/null || true
     fi
-    ((TRACKED_COUNT++))
+    TRACKED_COUNT=$((TRACKED_COUNT + 1))
 done
 
 echo "  Added $TRACKED_COUNT new patterns"
