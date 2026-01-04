@@ -58,12 +58,19 @@ if [ -t 0 ] && [ "$1" = "/bin/bash" ]; then
         echo -e "${CYAN}Repository:${NC} $REPO"
         echo -e "${CYAN}Branch:${NC}     $BRANCH"
 
-        # Kurzer Status
-        CHANGES=$(git status --porcelain 2>/dev/null | wc -l)
-        if [ "$CHANGES" -gt 0 ]; then
-            echo -e "${YELLOW}Changes:${NC}    $CHANGES uncommitted file(s)"
+        # Kurzer Status (mit Timeout für große Repos)
+        if CHANGES=$(timeout 3 git status --porcelain 2>/dev/null | head -100 | wc -l); then
+            if [ "$CHANGES" -gt 0 ]; then
+                if [ "$CHANGES" -ge 100 ]; then
+                    echo -e "${YELLOW}Changes:${NC}    100+ uncommitted file(s)"
+                else
+                    echo -e "${YELLOW}Changes:${NC}    $CHANGES uncommitted file(s)"
+                fi
+            else
+                echo -e "${GREEN}Changes:${NC}    Working tree clean"
+            fi
         else
-            echo -e "${GREEN}Changes:${NC}    Working tree clean"
+            echo -e "${YELLOW}Changes:${NC}    (skipped - large repo)"
         fi
         echo ""
     fi
