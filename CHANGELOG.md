@@ -1,3 +1,10 @@
+## [0.5.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.0...v0.5.1) (2026-01-04)
+
+
+### Bug Fixes
+
+* Optimize Docker image existence check in Ensure-Image function ([67c96ba](https://github.com/bauer-group/CS-DeveloperTools/commit/67c96ba6b9ab18dd129410c9f25b307109fcd32b))
+
 # [0.5.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.4.0...v0.5.0) (2026-01-04)
 
 
