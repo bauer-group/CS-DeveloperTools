@@ -1,3 +1,10 @@
+## [0.5.3](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.2...v0.5.3) (2026-01-04)
+
+
+### Bug Fixes
+
+* Update Dockerfile to use slim variant and improve package installation in git-lfs-migrate script ([0c38442](https://github.com/bauer-group/CS-DeveloperTools/commit/0c38442342aad33f0fe5db121466e74e402ad2a2))
+
 ## [0.5.2](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.1...v0.5.2) (2026-01-04)
 
 
