@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: git-changelog
+# @description: Generate changelog from git commits
+# @category: git
+# @usage: git-changelog.py [--format md|json] [--from <tag>]
 """
 git-changelog.py - Generate Changelog from Git Commits
 Erstellt professionelle Changelogs aus Git-Commits nach Conventional Commits Standard.

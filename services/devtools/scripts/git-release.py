@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: git-release
+# @description: Manage releases with semantic versioning
+# @category: git
+# @usage: git-release.py [major|minor|patch] [--dry-run]
 """
 git-release.py - Semantic Versioning Release Manager
 Verwaltet Releases nach Semantic Versioning (semver.org).

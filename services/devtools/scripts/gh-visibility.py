@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-visibility
+# @description: Change GitHub repository visibility
+# @category: github
+# @usage: gh-visibility.py <repo> [--public|--private|--internal]
 """
 gh-visibility.py - Change GitHub Repository Visibility
 Ändert die Sichtbarkeit von Repositories (public/private/internal).

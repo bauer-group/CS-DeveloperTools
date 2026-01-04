@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: git-lfs-migrate
+# @description: Migrate repository to Git LFS for binary files
+# @category: git
+# @usage: git-lfs-migrate.sh [--patterns "*.zip,*.bin"] [--dry-run]
 # =============================================================================
 # git-lfs-migrate.sh - Git LFS Migration Tool
 # Migriert Repositories zu Git LFS für bessere Handhabung von Binärdateien

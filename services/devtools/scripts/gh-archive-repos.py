@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-archive-repos
+# @description: Archive GitHub repositories
+# @category: github
+# @usage: gh-archive-repos.py [--topic <topic>] [--older-than <days>]
 """
 gh-archive-repos.py - GitHub Repository Archiver
 Archiviert Repositories basierend auf verschiedenen Kriterien.

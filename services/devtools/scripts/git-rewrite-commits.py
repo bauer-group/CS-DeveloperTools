@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: git-rewrite-commits
+# @description: Rewrite commit messages based on patterns
+# @category: git
+# @usage: git-rewrite-commits.py [--pattern "..."] [--dry-run]
 """
 git-rewrite-commits.py - Rewrite Commit Messages
 Bereinigt Commit-Messages basierend auf konfigurierbaren Patterns.

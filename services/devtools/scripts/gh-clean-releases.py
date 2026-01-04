@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-clean-releases
+# @description: Clean GitHub releases and tags
+# @category: github
+# @usage: gh-clean-releases.py [--repo <name>] [--keep-latest <n>]
 """
 gh-clean-releases.py - Clean GitHub Releases and Tags
 Löscht Releases und/oder Tags aus Repositories (nach Topic, Pattern oder einzeln).

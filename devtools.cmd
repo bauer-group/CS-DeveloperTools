@@ -33,6 +33,16 @@ if /i "%CMD%"=="gh-workflow" goto script
 if /i "%CMD%"=="gh-add-workflow" goto script
 if /i "%CMD%"=="gh-clean-releases" goto script
 if /i "%CMD%"=="gh-visibility" goto script
+if /i "%CMD%"=="gh-clone-org" goto script
+if /i "%CMD%"=="gh-sync-forks" goto script
+if /i "%CMD%"=="gh-pr-cleanup" goto script
+if /i "%CMD%"=="gh-secrets-audit" goto script
+if /i "%CMD%"=="gh-labels-sync" goto script
+if /i "%CMD%"=="gh-branch-protect" goto script
+if /i "%CMD%"=="git-mirror" goto script
+if /i "%CMD%"=="mirror" goto script
+if /i "%CMD%"=="git-contributors" goto script
+if /i "%CMD%"=="contributors" goto script
 if /i "%CMD%"=="version" goto version
 if /i "%CMD%"=="--version" goto version
 if /i "%CMD%"=="-v" goto version
@@ -51,16 +61,13 @@ if "%P%"=="" set "P=%CD%"
 pushd "%P%" 2>nul || goto shell_err
 set "P=%CD%"
 popd
-:: Convert to short path (8.3) to avoid spaces
-for %%i in ("%P%") do set "SHORT_P=%%~si"
 call :check_docker || goto :eof
 call :ensure_image || goto :eof
 echo [INFO] Starting DevTools shell...
 echo [INFO] Mounting: %P%
-echo [DEBUG] Short path: %SHORT_P%
 for /f "tokens=*" %%i in ('git config --global user.name 2^>nul') do set "GIT_NAME=%%i"
 for /f "tokens=*" %%i in ('git config --global user.email 2^>nul') do set "GIT_EMAIL=%%i"
-docker run -it --rm --name %CONTAINER_NAME% -v %SHORT_P%:/workspace -e "GIT_USER_NAME=%GIT_NAME%" -e "GIT_USER_EMAIL=%GIT_EMAIL%" -w /workspace %IMAGE_NAME%
+docker run -it --rm --name %CONTAINER_NAME% -v "%P%:/workspace" -e "GIT_USER_NAME=%GIT_NAME%" -e "GIT_USER_EMAIL=%GIT_EMAIL%" -w /workspace %IMAGE_NAME%
 endlocal
 goto :eof
 
@@ -137,6 +144,16 @@ if /i "%CMD%"=="gh-workflow" set "S=gh-trigger-workflow.sh"
 if /i "%CMD%"=="gh-add-workflow" set "S=gh-add-workflow.py"
 if /i "%CMD%"=="gh-clean-releases" set "S=gh-clean-releases.py"
 if /i "%CMD%"=="gh-visibility" set "S=gh-visibility.py"
+if /i "%CMD%"=="gh-clone-org" set "S=gh-clone-org.sh"
+if /i "%CMD%"=="gh-sync-forks" set "S=gh-sync-forks.py"
+if /i "%CMD%"=="gh-pr-cleanup" set "S=gh-pr-cleanup.py"
+if /i "%CMD%"=="gh-secrets-audit" set "S=gh-secrets-audit.py"
+if /i "%CMD%"=="gh-labels-sync" set "S=gh-labels-sync.py"
+if /i "%CMD%"=="gh-branch-protect" set "S=gh-branch-protection.py"
+if /i "%CMD%"=="git-mirror" set "S=git-mirror.sh"
+if /i "%CMD%"=="mirror" set "S=git-mirror.sh"
+if /i "%CMD%"=="git-contributors" set "S=git-contributors.py"
+if /i "%CMD%"=="contributors" set "S=git-contributors.py"
 docker run --rm -v "%CD%:/workspace" -w /workspace %IMAGE_NAME% /bin/bash -lc "%S% %~2 %~3 %~4 %~5"
 goto :eof
 
@@ -182,6 +199,14 @@ echo   gh-workflow [opts]    Trigger GitHub Actions
 echo   gh-add-workflow       Add workflow files
 echo   gh-clean-releases     Clean releases and tags
 echo   gh-visibility [opts]  Change repo visibility
+echo   gh-clone-org [opts]   Clone all repos from organization
+echo   gh-sync-forks [opts]  Sync forked repos with upstream
+echo   gh-pr-cleanup [opts]  Clean stale PRs and branches
+echo   gh-secrets-audit      Audit secrets across repos
+echo   gh-labels-sync [opts] Sync labels between repos
+echo   gh-branch-protect     Manage branch protection rules
+echo   git-mirror [opts]     Mirror repo between servers
+echo   git-contributors      Show contributor statistics
 echo   help                  Show this help
 echo   version               Show version
 echo.

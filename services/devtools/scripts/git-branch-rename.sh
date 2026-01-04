@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: git-branch-rename
+# @description: Rename git branches (local + remote)
+# @category: git
+# @usage: git-branch-rename.sh <old-name> <new-name> [--update-default]
 # =============================================================================
 # git-branch-rename.sh - Rename Git Branches (Local + Remote)
 # Benennt Branches um und aktualisiert Remote + Default Branch

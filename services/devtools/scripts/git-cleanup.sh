@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: git-cleanup
+# @description: Clean up branches, cache and optimize repository
+# @category: git
+# @usage: git-cleanup.sh [--dry-run] [--all]
 # =============================================================================
 # git-cleanup.sh - Repository Cleanup Tool
 # Bereinigt Branches, Cache und optimiert das Repository

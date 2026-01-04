@@ -116,6 +116,16 @@ RUN echo 'parse_git_branch() { git branch 2>/dev/null | grep "^*" | sed "s/* //"
 # =============================================================================
 COPY scripts/ /opt/devtools/
 RUN chmod +x /opt/devtools/*.sh /opt/devtools/*.py 2>/dev/null || true
+
+# Create symlinks without extensions for easier access
+# e.g., git-stats.sh -> git-stats, help-devtools.sh -> help-devtools
+RUN for script in /opt/devtools/*.sh /opt/devtools/*.py; do \
+        [ -f "$script" ] || continue; \
+        base=$(basename "$script"); \
+        name="${base%.*}"; \
+        ln -sf "$base" "/opt/devtools/$name"; \
+    done
+
 ENV PATH="/opt/devtools:${PATH}"
 
 # =============================================================================

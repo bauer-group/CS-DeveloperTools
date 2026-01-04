@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: gh-create-repo
+# @description: Create a new GitHub repository
+# @category: github
+# @usage: gh-create-repo.sh <name> [--private] [--description "..."]
 # =============================================================================
 # gh-create-repo.sh - Create GitHub Repository
 # Erstellt ein neues GitHub Repository mit konfigurierbaren Einstellungen

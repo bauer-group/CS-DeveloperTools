@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: gh-clone-org
+# @description: Clone all repositories from a GitHub organization
+# @category: github
+# @usage: gh-clone-org.sh <org-name> [--topic <topic>] [--archived]
 # =============================================================================
 # gh-clone-org.sh - Clone All Repositories from Organization
 # Klont alle Repositories einer Organisation (mit Filtern)

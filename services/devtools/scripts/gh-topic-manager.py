@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-topic-manager
+# @description: Manage GitHub repository topics
+# @category: github
+# @usage: gh-topic-manager.py <repo> [--add <topics>] [--remove <topics>]
 """
 gh-topic-manager.py - GitHub Repository Topics Manager
 Verwaltet Topics für einzelne oder mehrere Repositories.

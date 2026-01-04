@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-secrets-audit
+# @description: Audit GitHub repository secrets
+# @category: github
+# @usage: gh-secrets-audit.py [--org <name>] [--repos <list>]
 """
 gh-secrets-audit.py - Audit GitHub Repository Secrets
 Prüft Secrets über Repositories hinweg (ohne Werte anzuzeigen).

@@ -54,6 +54,16 @@ function Show-Help {
     Write-Host "    gh-add-workflow [opts]  Add workflow files to repos"
     Write-Host "    gh-clean-releases       Clean releases and tags"
     Write-Host "    gh-visibility [opts]    Change repo visibility (public/private)"
+    Write-Host "    gh-clone-org [opts]     Clone all repos from organization"
+    Write-Host "    gh-sync-forks [opts]    Sync forked repos with upstream"
+    Write-Host "    gh-pr-cleanup [opts]    Clean stale PRs and branches"
+    Write-Host "    gh-secrets-audit [opts] Audit secrets across repos"
+    Write-Host "    gh-labels-sync [opts]   Sync labels between repos"
+    Write-Host "    gh-branch-protect [opt] Manage branch protection rules"
+    Write-Host ""
+    Write-Host "  Git Advanced Tools (via container):" -ForegroundColor Cyan
+    Write-Host "    git-mirror [options]    Mirror repo between servers"
+    Write-Host "    git-contributors [opts] Show contributor statistics"
     Write-Host ""
     Write-Host "  General:" -ForegroundColor Cyan
     Write-Host "    help                    Show this help"
@@ -72,14 +82,14 @@ function Show-Help {
 
 # Docker prüfen
 function Test-Docker {
-    try {
-        docker info 2>&1 | Out-Null
-        return $true
-    }
-    catch {
+    $ErrorActionPreference = "SilentlyContinue"
+    docker info *>$null
+    $ErrorActionPreference = "Stop"
+    if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] Docker is not running. Please start Docker Desktop first." -ForegroundColor Red
         exit 1
     }
+    return $true
 }
 
 # Image bauen falls nötig
@@ -259,6 +269,54 @@ function Invoke-GhVisibility {
     Invoke-Script -Script "gh-visibility.py" -ScriptArgs $VisibilityArgs
 }
 
+# GitHub Clone Org
+function Invoke-GhCloneOrg {
+    param([string[]]$CloneArgs)
+    Invoke-Script -Script "gh-clone-org.sh" -ScriptArgs $CloneArgs
+}
+
+# GitHub Sync Forks
+function Invoke-GhSyncForks {
+    param([string[]]$SyncArgs)
+    Invoke-Script -Script "gh-sync-forks.py" -ScriptArgs $SyncArgs
+}
+
+# GitHub PR Cleanup
+function Invoke-GhPrCleanup {
+    param([string[]]$CleanupArgs)
+    Invoke-Script -Script "gh-pr-cleanup.py" -ScriptArgs $CleanupArgs
+}
+
+# GitHub Secrets Audit
+function Invoke-GhSecretsAudit {
+    param([string[]]$AuditArgs)
+    Invoke-Script -Script "gh-secrets-audit.py" -ScriptArgs $AuditArgs
+}
+
+# GitHub Labels Sync
+function Invoke-GhLabelsSync {
+    param([string[]]$LabelsArgs)
+    Invoke-Script -Script "gh-labels-sync.py" -ScriptArgs $LabelsArgs
+}
+
+# GitHub Branch Protection
+function Invoke-GhBranchProtection {
+    param([string[]]$ProtectionArgs)
+    Invoke-Script -Script "gh-branch-protection.py" -ScriptArgs $ProtectionArgs
+}
+
+# Git Mirror
+function Invoke-GitMirror {
+    param([string[]]$MirrorArgs)
+    Invoke-Script -Script "git-mirror.sh" -ScriptArgs $MirrorArgs
+}
+
+# Git Contributors
+function Invoke-GitContributors {
+    param([string[]]$ContribArgs)
+    Invoke-Script -Script "git-contributors.py" -ScriptArgs $ContribArgs
+}
+
 # Version
 function Show-Version {
     Write-Host "DevTools v1.0.0" -ForegroundColor White
@@ -266,8 +324,8 @@ function Show-Version {
     Write-Host ""
     Write-Host "Components:"
     Write-Host "  - DevTools Runtime Container (Git, Python, Shell)"
-    Write-Host "  - Git Tools (stats, cleanup, changelog, release, lfs-migrate, history-clean, branch-rename, split-repo, rewrite-commits)"
-    Write-Host "  - GitHub Tools (gh-create, gh-topics, gh-archive, gh-workflow, gh-add-workflow, gh-clean-releases, gh-visibility)"
+    Write-Host "  - Git Tools (stats, cleanup, changelog, release, lfs-migrate, history-clean, branch-rename, split-repo, rewrite-commits, mirror, contributors)"
+    Write-Host "  - GitHub Tools (gh-create, gh-topics, gh-archive, gh-workflow, gh-add-workflow, gh-clean-releases, gh-visibility, gh-clone-org, gh-sync-forks, gh-pr-cleanup, gh-secrets-audit, gh-labels-sync, gh-branch-protect)"
 }
 
 # Hauptlogik
@@ -338,6 +396,30 @@ switch ($Command.ToLower()) {
     }
     "gh-visibility" {
         Invoke-GhVisibility -VisibilityArgs $Arguments
+    }
+    "gh-clone-org" {
+        Invoke-GhCloneOrg -CloneArgs $Arguments
+    }
+    "gh-sync-forks" {
+        Invoke-GhSyncForks -SyncArgs $Arguments
+    }
+    "gh-pr-cleanup" {
+        Invoke-GhPrCleanup -CleanupArgs $Arguments
+    }
+    "gh-secrets-audit" {
+        Invoke-GhSecretsAudit -AuditArgs $Arguments
+    }
+    "gh-labels-sync" {
+        Invoke-GhLabelsSync -LabelsArgs $Arguments
+    }
+    { $_ -in "gh-branch-protect", "gh-branch-protection" } {
+        Invoke-GhBranchProtection -ProtectionArgs $Arguments
+    }
+    { $_ -in "git-mirror", "mirror" } {
+        Invoke-GitMirror -MirrorArgs $Arguments
+    }
+    { $_ -in "git-contributors", "contributors" } {
+        Invoke-GitContributors -ContribArgs $Arguments
     }
     { $_ -in "version", "--version", "-v" } {
         Show-Version

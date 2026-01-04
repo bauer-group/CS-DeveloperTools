@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: git-history-clean
+# @description: Remove large files from git history
+# @category: git
+# @usage: git-history-clean.sh [--size 10M] [--dry-run]
 # =============================================================================
 # git-history-clean.sh - Remove Large Files from Git History
 # Entfernt große Dateien aus der Git-Historie mit git-filter-repo

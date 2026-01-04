@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: gh-trigger-workflow
+# @description: Trigger GitHub Actions workflows manually
+# @category: github
+# @usage: gh-trigger-workflow.sh <repo> <workflow> [--ref <branch>]
 # =============================================================================
 # gh-trigger-workflow.sh - GitHub Actions Workflow Trigger
 # Löst GitHub Actions Workflows manuell aus

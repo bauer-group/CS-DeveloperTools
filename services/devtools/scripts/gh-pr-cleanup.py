@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-pr-cleanup
+# @description: Clean up stale pull requests and branches
+# @category: github
+# @usage: gh-pr-cleanup.py [--repo <name>] [--older-than <days>]
 """
 gh-pr-cleanup.py - Clean Up Stale Pull Requests and Branches
 Räumt alte PRs und verwaiste Branches auf.

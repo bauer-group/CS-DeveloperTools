@@ -59,11 +59,12 @@ if [ -t 0 ] && [ "$1" = "/bin/bash" ]; then
         echo ""
     fi
 
-    echo -e "${YELLOW}Available Tools:${NC}"
-    echo "  git-stats.sh        - Repository statistics"
-    echo "  git-cleanup.sh      - Clean up branches and cache"
-    echo "  git-changelog.py    - Generate changelog from commits"
-    echo "  git-release.py      - Manage semantic versioning"
+    # Show quick tool summary (first 4 of each category)
+    echo -e "${YELLOW}Quick Reference:${NC}"
+    echo "  git-stats           - Repository statistics"
+    echo "  git-cleanup         - Clean up branches and cache"
+    echo "  git-changelog       - Generate changelog from commits"
+    echo "  gh-create-repo      - Create GitHub repository"
     echo ""
     echo -e "${YELLOW}Git Aliases:${NC}"
     echo "  git st              - Short status"
@@ -71,7 +72,7 @@ if [ -t 0 ] && [ "$1" = "/bin/bash" ]; then
     echo "  git lga             - Full log graph"
     echo "  git branches        - List branches by date"
     echo ""
-    echo -e "Type ${CYAN}help-devtools${NC} for full command list."
+    echo -e "Type ${CYAN}help-devtools${NC} for full command list (24 tools available)."
     echo -e "${GREEN}═══════════════════════════════════════════════════════════════${NC}"
     echo ""
 fi

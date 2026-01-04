@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: git-stats
+# @description: Show repository statistics
+# @category: git
+# @usage: git-stats.sh
 # =============================================================================
 # git-stats.sh - Repository Statistics
 # Zeigt umfassende Statistiken zum Git-Repository

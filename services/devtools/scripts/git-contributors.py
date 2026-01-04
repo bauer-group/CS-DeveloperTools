@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: git-contributors
+# @description: Show contributor statistics for a repository
+# @category: git
+# @usage: git-contributors.py [--since <date>] [--format table|json]
 """
 git-contributors.py - Contributor Statistics
 Zeigt Contributor-Statistiken für ein Repository.

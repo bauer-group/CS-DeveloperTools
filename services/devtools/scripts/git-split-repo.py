@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: git-split-repo
+# @description: Split monorepo into separate repositories
+# @category: git
+# @usage: git-split-repo.py <folder> [--target <url>]
 """
 git-split-repo.py - Split Monorepo into Separate Repositories
 Extrahiert Unterordner in eigene Repositories mit vollständiger Historie.

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-labels-sync
+# @description: Sync labels between GitHub repositories
+# @category: github
+# @usage: gh-labels-sync.py <source-repo> <target-repo>
 """
 gh-labels-sync.py - Sync Labels Between Repositories
 Synchronisiert Labels zwischen GitHub Repositories.

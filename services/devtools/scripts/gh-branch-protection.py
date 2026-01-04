@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-branch-protection
+# @description: Manage branch protection rules
+# @category: github
+# @usage: gh-branch-protection.py <repo> [--branch <name>] [--rules <json>]
 """
 gh-branch-protection.py - Manage Branch Protection Rules
 Verwaltet Branch-Protection-Rules für GitHub Repositories.

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-sync-forks
+# @description: Sync forked repositories with upstream
+# @category: github
+# @usage: gh-sync-forks.py [--repo <name>] [--all]
 """
 gh-sync-forks.py - Sync Forked Repositories with Upstream
 Synchronisiert geforkten Repositories mit ihrem Upstream.

@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# @name: gh-add-workflow
+# @description: Add workflow files to GitHub repositories
+# @category: github
+# @usage: gh-add-workflow.py <workflow-file> [--topic <topic>] [--repos <list>]
 """
 gh-add-workflow.py - Add Workflow Files to GitHub Repositories
 Fügt Workflow-Dateien zu Repositories hinzu (nach Topic, Pattern oder Liste).

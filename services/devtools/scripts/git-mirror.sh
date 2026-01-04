@@ -1,4 +1,8 @@
 #!/bin/bash
+# @name: git-mirror
+# @description: Mirror repository between git servers
+# @category: git
+# @usage: git-mirror.sh <source-url> <target-url>
 # =============================================================================
 # git-mirror.sh - Mirror Repository Between Servers
 # Spiegelt ein Repository zwischen verschiedenen Git-Servern
