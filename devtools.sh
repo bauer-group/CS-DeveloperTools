@@ -10,6 +10,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IMAGE_NAME="bauer-devtools"
 CONTAINER_NAME="devtools-runtime"
+DATA_DIR="$SCRIPT_DIR/.data"
 
 # Farben
 RED='\033[0;31m'
@@ -131,9 +132,13 @@ start_shell() {
     local project_name
     project_name=$(basename "$project_path")
 
+    # Ensure data directory exists
+    mkdir -p "$DATA_DIR"
+
     docker run -it --rm \
         --name "$CONTAINER_NAME" \
         -v "$project_path:/workspace" \
+        -v "$DATA_DIR:/data" \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -e "GIT_USER_NAME=$git_name" \
         -e "GIT_USER_EMAIL=$git_email" \
@@ -153,8 +158,12 @@ run_script() {
 
     echo -e "${CYAN}[INFO] Running: $script $*${NC}"
 
+    # Ensure data directory exists
+    mkdir -p "$DATA_DIR"
+
     docker run --rm \
         -v "$project_path:/workspace" \
+        -v "$DATA_DIR:/data" \
         -v /var/run/docker.sock:/var/run/docker.sock \
         -w /workspace \
         "$IMAGE_NAME" \

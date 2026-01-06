@@ -68,6 +68,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -sSL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -o /usr/local/bin/yq \
     && chmod +x /usr/local/bin/yq
 
+# Install GitHub CLI (gh)
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get update \
+    && apt-get install -y gh \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # =============================================================================
 # Python Dependencies
 # =============================================================================
@@ -110,9 +119,14 @@ RUN echo 'parse_git_branch() { git branch 2>/dev/null | grep "^*" | sed "s/* //"
     echo 'export PS1="\[\033[1;34m\]devtools\[\033[0m\]:\[\033[1;32m\]\w\[\033[0m\] \[\033[1;33m\]\$(parse_git_branch)\[\033[0m\]\$ "' >> /etc/profile.d/devtools.sh && \
     echo 'export TERM=xterm-256color' >> /etc/profile.d/devtools.sh && \
     echo 'export PATH="/opt/devtools/bin:/opt/devtools/scripts:$PATH"' >> /etc/profile.d/devtools.sh && \
+    echo 'export GH_CONFIG_DIR="/data/gh"' >> /etc/profile.d/devtools.sh && \
     echo 'alias ll="ls -la --color=auto"' >> /etc/profile.d/devtools.sh && \
     echo 'alias la="ls -A --color=auto"' >> /etc/profile.d/devtools.sh && \
     echo 'alias l="ls -CF --color=auto"' >> /etc/profile.d/devtools.sh
+
+# Data directory for persistent config (GitHub auth, etc.)
+RUN mkdir -p /data/gh
+ENV GH_CONFIG_DIR="/data/gh"
 
 # =============================================================================
 # Scripts Directory

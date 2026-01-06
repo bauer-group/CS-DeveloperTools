@@ -70,11 +70,20 @@ do_login() {
     echo -e "${BOLD}${CYAN}GitHub Login${NC}"
     echo ""
 
-    echo -e "${YELLOW}Starting interactive login...${NC}"
-    echo "You will be prompted to authenticate via browser or device code."
+    echo -e "${YELLOW}Device Code Authentication${NC}"
+    echo ""
+    echo "Since this is a container environment without a browser,"
+    echo "you'll use the device code flow:"
+    echo ""
+    echo "  1. A one-time code will be displayed below"
+    echo "  2. Open ${CYAN}https://github.com/login/device${NC} in your browser"
+    echo "  3. Enter the code to authenticate"
+    echo ""
+    read -rp "Press Enter to continue..."
     echo ""
 
-    gh auth login --git-protocol https
+    # Use web login with device code flow, suppress browser error
+    gh auth login --git-protocol https --web 2>&1 | grep -v "Failed opening a web browser" | grep -v "executable file not found" | grep -v "Please try entering the URL"
 
     echo ""
     echo -e "${GREEN}Login successful!${NC}"

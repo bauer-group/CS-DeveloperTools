@@ -7,6 +7,7 @@
 set "SCRIPT_DIR=%~dp0"
 set "IMAGE_NAME=bauer-devtools"
 set "CONTAINER_NAME=devtools-runtime"
+set "DATA_DIR=%SCRIPT_DIR%.data"
 
 :: Get command
 set "CMD=%1"
@@ -68,7 +69,8 @@ echo [INFO] Mounting: %P%
 for /f "tokens=*" %%i in ('git config --global user.name 2^>nul') do set "GIT_NAME=%%i"
 for /f "tokens=*" %%i in ('git config --global user.email 2^>nul') do set "GIT_EMAIL=%%i"
 for %%i in ("%P%") do set "PROJECT_NAME=%%~nxi"
-docker run -it --rm --name %CONTAINER_NAME% -v "%P%:/workspace" -e "GIT_USER_NAME=%GIT_NAME%" -e "GIT_USER_EMAIL=%GIT_EMAIL%" -e "PROJECT_NAME=%PROJECT_NAME%" -w /workspace %IMAGE_NAME%
+if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
+docker run -it --rm --name %CONTAINER_NAME% -v "%P%:/workspace" -v "%DATA_DIR%:/data" -e "GIT_USER_NAME=%GIT_NAME%" -e "GIT_USER_EMAIL=%GIT_EMAIL%" -e "PROJECT_NAME=%PROJECT_NAME%" -w /workspace %IMAGE_NAME%
 endlocal
 goto :eof
 
@@ -97,7 +99,8 @@ call :check_docker || goto :eof
 call :ensure_image || goto :eof
 set "SCRIPT=%~2"
 echo [INFO] Running: %SCRIPT% %3 %4 %5 %6
-docker run --rm -v "%CD%:/workspace" -w /workspace %IMAGE_NAME% /bin/bash -lc "%SCRIPT% %~3 %~4 %~5 %~6"
+if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
+docker run --rm -v "%CD%:/workspace" -v "%DATA_DIR%:/data" -w /workspace %IMAGE_NAME% /bin/bash -lc "%SCRIPT% %~3 %~4 %~5 %~6"
 goto :eof
 
 :run_err
@@ -111,7 +114,8 @@ set "P=%~2"
 if "%P%"=="" set "P=%CD%"
 call :check_docker || goto :eof
 call :ensure_image || goto :eof
-docker run --rm -v "%P%:/workspace" -w /workspace %IMAGE_NAME% /bin/bash -lc "git-stats.sh"
+if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
+docker run --rm -v "%P%:/workspace" -v "%DATA_DIR%:/data" -w /workspace %IMAGE_NAME% /bin/bash -lc "git-stats.sh"
 goto :eof
 
 :: =============================================================================
@@ -121,7 +125,8 @@ set "P=%~2"
 if "%P%"=="" set "P=%CD%"
 call :check_docker || goto :eof
 call :ensure_image || goto :eof
-docker run --rm -v "%P%:/workspace" -w /workspace %IMAGE_NAME% /bin/bash -lc "git-cleanup.sh %~3 %~4 %~5"
+if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
+docker run --rm -v "%P%:/workspace" -v "%DATA_DIR%:/data" -w /workspace %IMAGE_NAME% /bin/bash -lc "git-cleanup.sh %~3 %~4 %~5"
 goto :eof
 
 :: =============================================================================
@@ -155,7 +160,8 @@ if /i "%CMD%"=="git-mirror" set "S=git-mirror.sh"
 if /i "%CMD%"=="mirror" set "S=git-mirror.sh"
 if /i "%CMD%"=="git-contributors" set "S=git-contributors.py"
 if /i "%CMD%"=="contributors" set "S=git-contributors.py"
-docker run --rm -v "%CD%:/workspace" -w /workspace %IMAGE_NAME% /bin/bash -lc "%S% %~2 %~3 %~4 %~5"
+if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
+docker run --rm -v "%CD%:/workspace" -v "%DATA_DIR%:/data" -w /workspace %IMAGE_NAME% /bin/bash -lc "%S% %~2 %~3 %~4 %~5"
 goto :eof
 
 :: =============================================================================

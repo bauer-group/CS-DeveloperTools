@@ -17,6 +17,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ImageName = "bauer-devtools"
 $ContainerName = "devtools-runtime"
+$DataDir = Join-Path $ScriptDir ".data"
 
 # Hilfe anzeigen
 function Show-Help {
@@ -139,9 +140,15 @@ function Start-Shell {
 
     $projectName = Split-Path -Leaf $ProjectPath
 
+    # Ensure data directory exists
+    if (-not (Test-Path $DataDir)) {
+        New-Item -ItemType Directory -Path $DataDir -Force | Out-Null
+    }
+
     docker run -it --rm `
         --name $ContainerName `
         -v "${ProjectPath}:/workspace" `
+        -v "${DataDir}:/data" `
         -v /var/run/docker.sock:/var/run/docker.sock `
         -e "GIT_USER_NAME=$gitName" `
         -e "GIT_USER_EMAIL=$gitEmail" `
@@ -164,8 +171,14 @@ function Invoke-Script {
     $allArgs = if ($ScriptArgs) { $ScriptArgs -join ' ' } else { '' }
     Write-Host "[INFO] Running: $Script $allArgs" -ForegroundColor Cyan
 
+    # Ensure data directory exists
+    if (-not (Test-Path $DataDir)) {
+        New-Item -ItemType Directory -Path $DataDir -Force | Out-Null
+    }
+
     docker run --rm `
         -v "${ProjectPath}:/workspace" `
+        -v "${DataDir}:/data" `
         -v /var/run/docker.sock:/var/run/docker.sock `
         -w /workspace `
         $ImageName `
