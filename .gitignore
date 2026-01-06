@@ -6,6 +6,10 @@
 # Environment files
 .env
 
-# User data (auth, settings)
-data/*
-!data/*.example
+# dozzle User data (auth, settings)
+/dozzle/data/*
+!/dozzle/data/*.example
+
+# Persistent data for DevTools (GitHub auth, etc.)
+/.data/*
+!/.data/.gitkeep
