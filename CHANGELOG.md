@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.6.0...v0.7.0) (2026-01-06)
+
+
+### Features
+
+* Add README and defender-exclusions.ps1 script for Microsoft Defender configuration ([0e972d1](https://github.com/bauer-group/CS-DeveloperTools/commit/0e972d18d30aa44329ae17ebfaeb4d62aed30f4d))
+
 # [0.6.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.4...v0.6.0) (2026-01-06)
 
 
