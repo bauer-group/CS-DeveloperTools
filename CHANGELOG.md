@@ -1,3 +1,10 @@
+## [0.5.4](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.3...v0.5.4) (2026-01-06)
+
+
+### Bug Fixes
+
+* Update .gitignore to correctly handle dozzle user data and add .gitkeep for persistent data ([d8defe9](https://github.com/bauer-group/CS-DeveloperTools/commit/d8defe9b2802b5ed302fd68df205a77c989f40a1))
+
 ## [0.5.3](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.2...v0.5.3) (2026-01-04)
 
 
