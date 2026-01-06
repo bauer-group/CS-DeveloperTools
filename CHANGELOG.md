@@ -1,3 +1,10 @@
+# [0.6.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.4...v0.6.0) (2026-01-06)
+
+
+### Features
+
+* Add data directory for persistent storage and enhance GitHub CLI authentication ([3381651](https://github.com/bauer-group/CS-DeveloperTools/commit/3381651aa1baaf05c097ef92636a07fbbdb613bd))
+
 ## [0.5.4](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.5.3...v0.5.4) (2026-01-06)
 
 
