@@ -1,3 +1,10 @@
+## [0.7.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.7.0...v0.7.1) (2026-01-07)
+
+
+### Bug Fixes
+
+* Add initial commit creation for empty repositories and version tagging ([eaaa876](https://github.com/bauer-group/CS-DeveloperTools/commit/eaaa876c1ba87da64727c518326dcf8d70d16d2b))
+
 # [0.7.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.6.0...v0.7.0) (2026-01-06)
 
 
