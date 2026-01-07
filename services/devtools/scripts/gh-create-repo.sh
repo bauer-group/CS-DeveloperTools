@@ -276,7 +276,14 @@ if [ "$DRY_RUN" = true ]; then
     fi
 
     if [ "$INIT_VERSION" = true ]; then
-        echo "  git tag $VERSION_TAG && git push origin $VERSION_TAG"
+        if [ "$INIT_README" = true ] || [ -n "$ADD_LICENSE" ] || [ -n "$ADD_GITIGNORE" ]; then
+            echo "  git tag $VERSION_TAG && git push origin $VERSION_TAG"
+        else
+            echo "  # Create empty initial commit (empty repo)"
+            echo "  git commit --allow-empty -m 'chore: initial repository setup'"
+            echo "  git push -u origin main"
+            echo "  git tag $VERSION_TAG && git push origin $VERSION_TAG"
+        fi
     fi
 
     if [ "$CLONE_AFTER" = true ]; then
@@ -343,11 +350,33 @@ if [ "$INIT_VERSION" = true ]; then
     if [ "$INIT_README" = true ] || [ -n "$ADD_LICENSE" ] || [ -n "$ADD_GITIGNORE" ]; then
         create_version_tag "$FULL_NAME" "$VERSION_TAG" "$CLONE_DIR"
     else
+        # Empty repo - create initial commit first
         echo ""
-        echo -e "${YELLOW}Note: Version tag requires at least one commit.${NC}"
-        echo "  Use --init, --license, or --gitignore to create initial commit,"
-        echo "  or create the tag manually after your first commit:"
-        echo "  git tag $VERSION_TAG && git push origin $VERSION_TAG"
+        echo -e "${CYAN}Creating initial commit for version tag...${NC}"
+
+        TEMP_DIR=$(mktemp -d)
+        cd "$TEMP_DIR"
+
+        git init --quiet
+        git remote add origin "https://github.com/$FULL_NAME.git"
+
+        # Configure git for this commit
+        git config user.email "devtools@bauer-group.com"
+        git config user.name "DevTools"
+
+        # Create empty initial commit
+        git commit --quiet --allow-empty -m "chore: initial repository setup"
+        git branch -M main
+        git push -u origin main --quiet
+
+        # Now create the tag
+        git tag "$VERSION_TAG"
+        git push origin "$VERSION_TAG" --quiet
+
+        cd - > /dev/null
+        rm -rf "$TEMP_DIR"
+
+        echo -e "${GREEN}Initial commit and tag $VERSION_TAG created${NC}"
     fi
 fi
 
