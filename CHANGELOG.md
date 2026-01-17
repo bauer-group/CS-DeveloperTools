@@ -1,3 +1,14 @@
+## [0.8.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.7.1...v0.8.0) (2026-01-17)
+
+### 🚀 Features
+
+* Add gh-packages-cleanup command and script for cleaning old package versions ([62ba395](https://github.com/bauer-group/CS-DeveloperTools/commit/62ba395221fa1665531c2d1cb64b84367a66854a))
+* Add refresh command to update GitHub authentication scopes ([0f5226c](https://github.com/bauer-group/CS-DeveloperTools/commit/0f5226cc727f9f4b2d643624392bd3dad838fb73))
+* Enhance devtools with dynamic command handling and JSON configuration ([fdef3de](https://github.com/bauer-group/CS-DeveloperTools/commit/fdef3dee866297d159b12b6dd60b421f8cc9ef32))
+* Enhance get_packages function with verbose output and error handling ([2822949](https://github.com/bauer-group/CS-DeveloperTools/commit/282294929f720352a8837f368288623085668ab6))
+* Improve error handling in get_packages function for unsupported package types ([0582db3](https://github.com/bauer-group/CS-DeveloperTools/commit/0582db38ad60eabc0f8c2325c306bf1206315961))
+* URL-encode package names in get_package_versions and delete_package_version functions ([37705fc](https://github.com/bauer-group/CS-DeveloperTools/commit/37705fcdc6f911c17de9f22b92dc837a349e7cab))
+
 ## [0.7.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.7.0...v0.7.1) (2026-01-07)
 
 
