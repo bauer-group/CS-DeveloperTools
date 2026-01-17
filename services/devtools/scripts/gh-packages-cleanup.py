@@ -105,29 +105,39 @@ def get_packages(org: str, package_type: Optional[str] = None, verbose: bool = T
 
 def get_package_versions(org: str, package_type: str, package_name: str) -> List[Dict]:
     """Get all versions of a package."""
-    output = run_gh([
-        "api", f"/orgs/{org}/packages/{package_type}/{package_name}/versions",
-        "--paginate"
-    ])
-    if not output:
-        return []
+    import urllib.parse
 
+    # URL-encode the package name (important for containers with slashes)
+    encoded_name = urllib.parse.quote(package_name, safe='')
+
+    cmd = ["gh", "api", f"/orgs/{org}/packages/{package_type}/{encoded_name}/versions", "--paginate"]
     try:
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            return []
+        output = result.stdout.strip()
+        if not output:
+            return []
         return json.loads(output)
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, FileNotFoundError):
         return []
 
 
 def delete_package_version(org: str, package_type: str, package_name: str,
                           version_id: int, dry_run: bool = True) -> bool:
     """Delete a specific package version."""
+    import urllib.parse
+
     if dry_run:
         return True
+
+    # URL-encode the package name (important for containers with slashes)
+    encoded_name = urllib.parse.quote(package_name, safe='')
 
     try:
         run_gh([
             "api", "-X", "DELETE",
-            f"/orgs/{org}/packages/{package_type}/{package_name}/versions/{version_id}"
+            f"/orgs/{org}/packages/{package_type}/{encoded_name}/versions/{version_id}"
         ])
         return True
     except subprocess.CalledProcessError:
