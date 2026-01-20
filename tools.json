@@ -30,6 +30,12 @@
       "name": "Git Tools",
       "tools": [
         {
+          "command": "git-authors-fix",
+          "script": "git-authors-fix.py",
+          "description": "Fix author name and email in git history",
+          "args": "--old-email <email> --new-name <name> --new-email <email>"
+        },
+        {
           "command": "git-branch-rename",
           "script": "git-branch-rename.sh",
           "description": "Rename git branches (local + remote)",
@@ -64,6 +70,12 @@
           "aliases": [
             "contributors"
           ]
+        },
+        {
+          "command": "git-find-large-files",
+          "script": "git-find-large-files.py",
+          "description": "Find large files in git history",
+          "args": "[--size <min-size>] [--top <n>]"
         },
         {
           "command": "git-history-clean",
@@ -121,6 +133,12 @@
           ]
         },
         {
+          "command": "git-squash-history",
+          "script": "git-squash-history.py",
+          "description": "Squash old git history to reduce repository size",
+          "args": "[--before <date>] [--keep-recent <n>]"
+        },
+        {
           "command": "git-stats",
           "script": "git-stats.sh",
           "description": "Show repository statistics",
@@ -134,6 +152,12 @@
       "id": "github",
       "name": "GitHub Tools",
       "tools": [
+        {
+          "command": "gh-actions-usage",
+          "script": "gh-actions-usage.py",
+          "description": "Show GitHub Actions usage and billing across organization",
+          "args": "[-o <org>] [--detailed]"
+        },
         {
           "command": "gh-add-workflow",
           "script": "gh-add-workflow.py",
@@ -177,6 +201,12 @@
           "args": "<org-name> [--topic <topic>] [--archived]"
         },
         {
+          "command": "gh-codeowners-sync",
+          "script": "gh-codeowners-sync.py",
+          "description": "Sync CODEOWNERS file across organization repositories",
+          "args": "[-o <org>] --source <repo> [--execute]"
+        },
+        {
           "command": "gh-create-repo",
           "script": "gh-create-repo.sh",
           "description": "Create a new GitHub repository with full configuration",
@@ -192,10 +222,22 @@
           "args": "[-o <org>] [--execute] [--cleanup]"
         },
         {
+          "command": "gh-environments-audit",
+          "script": "gh-environments-audit.py",
+          "description": "Audit deployment environments across organization repositories",
+          "args": "[-o <org>]"
+        },
+        {
           "command": "gh-labels-sync",
           "script": "gh-labels-sync.py",
           "description": "Sync labels between GitHub repositories",
           "args": "<source-repo> <target-repo>"
+        },
+        {
+          "command": "gh-license-audit",
+          "script": "gh-license-audit.py",
+          "description": "Audit license files across organization repositories",
+          "args": "[-o <org>] [--missing-only]"
         },
         {
           "command": "gh-packages-cleanup",
@@ -210,16 +252,40 @@
           "args": "[--repo <name>] [--older-than <days>]"
         },
         {
+          "command": "gh-repo-settings",
+          "script": "gh-repo-settings.py",
+          "description": "Manage repository settings across organization",
+          "args": "[-o <org>] [--topic <topic>] [--execute]"
+        },
+        {
+          "command": "gh-runners-selfhosted-status",
+          "script": "gh-runners-selfhosted-status.py",
+          "description": "Show self-hosted runner status across organization",
+          "args": "[-o <org>]"
+        },
+        {
           "command": "gh-secrets-audit",
           "script": "gh-secrets-audit.py",
           "description": "Audit GitHub repository secrets",
           "args": "[--org <name>] [--repos <list>]"
         },
         {
+          "command": "gh-stale-branches",
+          "script": "gh-stale-branches.py",
+          "description": "Find stale branches across organization repositories",
+          "args": "[-o <org>] [--days <n>] [--delete]"
+        },
+        {
           "command": "gh-sync-forks",
           "script": "gh-sync-forks.py",
           "description": "Sync forked repositories with upstream",
           "args": "[--repo <name>] [--all]"
+        },
+        {
+          "command": "gh-template-sync",
+          "script": "gh-template-sync.py",
+          "description": "Sync issue and PR templates across organization repositories",
+          "args": "[-o <org>] --source <repo> [--execute]"
         },
         {
           "command": "gh-topic-manager",
@@ -244,6 +310,12 @@
           "script": "gh-visibility.py",
           "description": "Change GitHub repository visibility",
           "args": "<repo> [--public|--private|--internal]"
+        },
+        {
+          "command": "gh-webhook-manager",
+          "script": "gh-webhook-manager.py",
+          "description": "Manage webhooks across organization repositories",
+          "args": "[-o <org>] [--list|--add|--delete] [--execute]"
         }
       ]
     },

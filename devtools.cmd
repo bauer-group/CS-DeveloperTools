@@ -21,6 +21,7 @@ if /i "%CMD%"=="build" goto build
 if /i "%CMD%"=="run" goto run
 if /i "%CMD%"=="stats" goto stats
 if /i "%CMD%"=="cleanup" goto cleanup
+if /i "%CMD%"=="git-authors-fix" goto script
 if /i "%CMD%"=="git-branch-rename" goto script
 if /i "%CMD%"=="branch-rename" goto script
 if /i "%CMD%"=="git-changelog" goto script
@@ -29,6 +30,7 @@ if /i "%CMD%"=="git-cleanup" goto script
 if /i "%CMD%"=="cleanup" goto script
 if /i "%CMD%"=="git-contributors" goto script
 if /i "%CMD%"=="contributors" goto script
+if /i "%CMD%"=="git-find-large-files" goto script
 if /i "%CMD%"=="git-history-clean" goto script
 if /i "%CMD%"=="history-clean" goto script
 if /i "%CMD%"=="git-lfs-migrate" goto script
@@ -42,8 +44,10 @@ if /i "%CMD%"=="git-rewrite-commits" goto script
 if /i "%CMD%"=="rewrite-commits" goto script
 if /i "%CMD%"=="git-split-repo" goto script
 if /i "%CMD%"=="split-repo" goto script
+if /i "%CMD%"=="git-squash-history" goto script
 if /i "%CMD%"=="git-stats" goto script
 if /i "%CMD%"=="stats" goto script
+if /i "%CMD%"=="gh-actions-usage" goto script
 if /i "%CMD%"=="gh-add-workflow" goto script
 if /i "%CMD%"=="gh-archive-repos" goto script
 if /i "%CMD%"=="gh-archive" goto script
@@ -52,18 +56,27 @@ if /i "%CMD%"=="gh-branch-protection" goto script
 if /i "%CMD%"=="gh-branch-protect" goto script
 if /i "%CMD%"=="gh-clean-releases" goto script
 if /i "%CMD%"=="gh-clone-org" goto script
+if /i "%CMD%"=="gh-codeowners-sync" goto script
 if /i "%CMD%"=="gh-create-repo" goto script
 if /i "%CMD%"=="gh-create" goto script
+if /i "%CMD%"=="gh-dependabot-labels" goto script
+if /i "%CMD%"=="gh-environments-audit" goto script
 if /i "%CMD%"=="gh-labels-sync" goto script
+if /i "%CMD%"=="gh-license-audit" goto script
 if /i "%CMD%"=="gh-packages-cleanup" goto script
 if /i "%CMD%"=="gh-pr-cleanup" goto script
+if /i "%CMD%"=="gh-repo-settings" goto script
+if /i "%CMD%"=="gh-runners-selfhosted-status" goto script
 if /i "%CMD%"=="gh-secrets-audit" goto script
+if /i "%CMD%"=="gh-stale-branches" goto script
 if /i "%CMD%"=="gh-sync-forks" goto script
+if /i "%CMD%"=="gh-template-sync" goto script
 if /i "%CMD%"=="gh-topic-manager" goto script
 if /i "%CMD%"=="gh-topics" goto script
 if /i "%CMD%"=="gh-trigger-workflow" goto script
 if /i "%CMD%"=="gh-workflow" goto script
 if /i "%CMD%"=="gh-visibility" goto script
+if /i "%CMD%"=="gh-webhook-manager" goto script
 if /i "%CMD%"=="version" goto version
 if /i "%CMD%"=="--version" goto version
 if /i "%CMD%"=="-v" goto version
@@ -155,6 +168,7 @@ goto :eof
 call :check_docker || goto :eof
 call :ensure_image || goto :eof
 set "S="
+if /i "%CMD%"=="git-authors-fix" set "S=git-authors-fix.py"
 if /i "%CMD%"=="git-branch-rename" set "S=git-branch-rename.sh"
 if /i "%CMD%"=="branch-rename" set "S=git-branch-rename.sh"
 if /i "%CMD%"=="git-changelog" set "S=git-changelog.py"
@@ -163,6 +177,7 @@ if /i "%CMD%"=="git-cleanup" set "S=git-cleanup.sh"
 if /i "%CMD%"=="cleanup" set "S=git-cleanup.sh"
 if /i "%CMD%"=="git-contributors" set "S=git-contributors.py"
 if /i "%CMD%"=="contributors" set "S=git-contributors.py"
+if /i "%CMD%"=="git-find-large-files" set "S=git-find-large-files.py"
 if /i "%CMD%"=="git-history-clean" set "S=git-history-clean.sh"
 if /i "%CMD%"=="history-clean" set "S=git-history-clean.sh"
 if /i "%CMD%"=="git-lfs-migrate" set "S=git-lfs-migrate.sh"
@@ -176,8 +191,10 @@ if /i "%CMD%"=="git-rewrite-commits" set "S=git-rewrite-commits.py"
 if /i "%CMD%"=="rewrite-commits" set "S=git-rewrite-commits.py"
 if /i "%CMD%"=="git-split-repo" set "S=git-split-repo.py"
 if /i "%CMD%"=="split-repo" set "S=git-split-repo.py"
+if /i "%CMD%"=="git-squash-history" set "S=git-squash-history.py"
 if /i "%CMD%"=="git-stats" set "S=git-stats.sh"
 if /i "%CMD%"=="stats" set "S=git-stats.sh"
+if /i "%CMD%"=="gh-actions-usage" set "S=gh-actions-usage.py"
 if /i "%CMD%"=="gh-add-workflow" set "S=gh-add-workflow.py"
 if /i "%CMD%"=="gh-archive-repos" set "S=gh-archive-repos.py"
 if /i "%CMD%"=="gh-archive" set "S=gh-archive-repos.py"
@@ -186,18 +203,27 @@ if /i "%CMD%"=="gh-branch-protection" set "S=gh-branch-protection.py"
 if /i "%CMD%"=="gh-branch-protect" set "S=gh-branch-protection.py"
 if /i "%CMD%"=="gh-clean-releases" set "S=gh-clean-releases.py"
 if /i "%CMD%"=="gh-clone-org" set "S=gh-clone-org.sh"
+if /i "%CMD%"=="gh-codeowners-sync" set "S=gh-codeowners-sync.py"
 if /i "%CMD%"=="gh-create-repo" set "S=gh-create-repo.sh"
 if /i "%CMD%"=="gh-create" set "S=gh-create-repo.sh"
+if /i "%CMD%"=="gh-dependabot-labels" set "S=gh-dependabot-labels.py"
+if /i "%CMD%"=="gh-environments-audit" set "S=gh-environments-audit.py"
 if /i "%CMD%"=="gh-labels-sync" set "S=gh-labels-sync.py"
+if /i "%CMD%"=="gh-license-audit" set "S=gh-license-audit.py"
 if /i "%CMD%"=="gh-packages-cleanup" set "S=gh-packages-cleanup.py"
 if /i "%CMD%"=="gh-pr-cleanup" set "S=gh-pr-cleanup.py"
+if /i "%CMD%"=="gh-repo-settings" set "S=gh-repo-settings.py"
+if /i "%CMD%"=="gh-runners-selfhosted-status" set "S=gh-runners-selfhosted-status.py"
 if /i "%CMD%"=="gh-secrets-audit" set "S=gh-secrets-audit.py"
+if /i "%CMD%"=="gh-stale-branches" set "S=gh-stale-branches.py"
 if /i "%CMD%"=="gh-sync-forks" set "S=gh-sync-forks.py"
+if /i "%CMD%"=="gh-template-sync" set "S=gh-template-sync.py"
 if /i "%CMD%"=="gh-topic-manager" set "S=gh-topic-manager.py"
 if /i "%CMD%"=="gh-topics" set "S=gh-topic-manager.py"
 if /i "%CMD%"=="gh-trigger-workflow" set "S=gh-trigger-workflow.sh"
 if /i "%CMD%"=="gh-workflow" set "S=gh-trigger-workflow.sh"
 if /i "%CMD%"=="gh-visibility" set "S=gh-visibility.py"
+if /i "%CMD%"=="gh-webhook-manager" set "S=gh-webhook-manager.py"
 if not exist "%DATA_DIR%" mkdir "%DATA_DIR%"
 docker run --rm -v "%CD%:/workspace" -v "%DATA_DIR%:/data" -w /workspace %IMAGE_NAME% /bin/bash -lc "%S% %~2 %~3 %~4 %~5"
 goto :eof
@@ -210,7 +236,7 @@ echo Swiss Army Knife for Git-based Development
 echo.
 echo Components:
 echo   - DevTools Runtime Container (Git, Python, Shell)
-echo   - 26 tools from tools.json
+echo   - 39 tools from tools.json
 goto :eof
 
 :: =============================================================================
@@ -231,6 +257,8 @@ echo.
 echo   Runtime Container:
 echo.
 echo   Git Tools:
+echo   git-authors-fix --old-email ^<email^> --new-name ^<name^> --new-ema...
+echo       Fix author name and email in git history
 echo   git-branch-rename (branch-rename) ^<old-name^> ^<new-name^> [--upda...
 echo       Rename git branches (local + remote)
 echo   git-changelog (changelog) [--format md^|json] [--from ^<tag^>]
@@ -239,6 +267,8 @@ echo   git-cleanup (cleanup) [--dry-run] [--all]
 echo       Clean up branches, cache and optimize repository
 echo   git-contributors (contributors) [--since ^<date^>] [--format table^...
 echo       Show contributor statistics for a repository
+echo   git-find-large-files [--size ^<min-size^>] [--top ^<n^>]
+echo       Find large files in git history
 echo   git-history-clean (history-clean) [--size 10M] [--dry-run]
 echo       Remove large files from git history
 echo   git-lfs-migrate (lfs-migrate, lfs) [--patterns "*.zip,*.bin"] [--dr...
@@ -251,10 +281,14 @@ echo   git-rewrite-commits (rewrite-commits) [--pattern "..."] [--dry-run]
 echo       Rewrite commit messages based on patterns
 echo   git-split-repo (split-repo) ^<folder^> [--target ^<url^>]
 echo       Split monorepo into separate repositories
+echo   git-squash-history [--before ^<date^>] [--keep-recent ^<n^>]
+echo       Squash old git history to reduce repository size
 echo   git-stats (stats)
 echo       Show repository statistics
 echo.
 echo   GitHub Tools:
+echo   gh-actions-usage [-o ^<org^>] [--detailed]
+echo       Show GitHub Actions usage and billing across organization
 echo   gh-add-workflow ^<workflow-file^> [--topic ^<topic^>] [--repos ^<li...
 echo       Add workflow files to GitHub repositories
 echo   gh-archive-repos (gh-archive) [--topic ^<topic^>] [--older-than ^<d...
@@ -267,24 +301,42 @@ echo   gh-clean-releases [--repo ^<name^>] [--keep-latest ^<n^>]
 echo       Clean GitHub releases and tags
 echo   gh-clone-org ^<org-name^> [--topic ^<topic^>] [--archived]
 echo       Clone all repositories from a GitHub organization
+echo   gh-codeowners-sync [-o ^<org^>] --source ^<repo^> [--execute]
+echo       Sync CODEOWNERS file across organization repositories
 echo   gh-create-repo (gh-create) ^<name^> [-d "desc"] [-t topics] [-u url...
 echo       Create a new GitHub repository with full configuration
+echo   gh-dependabot-labels [-o ^<org^>] [--execute] [--cleanup]
+echo       Sync labels from dependabot.yml across organization repos
+echo   gh-environments-audit [-o ^<org^>]
+echo       Audit deployment environments across organization repositories
 echo   gh-labels-sync ^<source-repo^> ^<target-repo^>
 echo       Sync labels between GitHub repositories
+echo   gh-license-audit [-o ^<org^>] [--missing-only]
+echo       Audit license files across organization repositories
 echo   gh-packages-cleanup [-o ^<org^>] [-t ^<type^>] [--execute]
 echo       Clean old package versions from GitHub Packages
 echo   gh-pr-cleanup [--repo ^<name^>] [--older-than ^<days^>]
 echo       Clean up stale pull requests and branches
+echo   gh-repo-settings [-o ^<org^>] [--topic ^<topic^>] [--execute]
+echo       Manage repository settings across organization
+echo   gh-runners-selfhosted-status [-o ^<org^>]
+echo       Show self-hosted runner status across organization
 echo   gh-secrets-audit [--org ^<name^>] [--repos ^<list^>]
 echo       Audit GitHub repository secrets
+echo   gh-stale-branches [-o ^<org^>] [--days ^<n^>] [--delete]
+echo       Find stale branches across organization repositories
 echo   gh-sync-forks [--repo ^<name^>] [--all]
 echo       Sync forked repositories with upstream
+echo   gh-template-sync [-o ^<org^>] --source ^<repo^> [--execute]
+echo       Sync issue and PR templates across organization repositories
 echo   gh-topic-manager (gh-topics) ^<repo^> [--add ^<topics^>] [--remove ...
 echo       Manage GitHub repository topics
 echo   gh-trigger-workflow (gh-workflow) ^<repo^> ^<workflow^> [--ref ^<br...
 echo       Trigger GitHub Actions workflows manually
 echo   gh-visibility ^<repo^> [--public^|--private^|--internal]
 echo       Change GitHub repository visibility
+echo   gh-webhook-manager [-o ^<org^>] [--list^|--add^|--delete] [--execute]
+echo       Manage webhooks across organization repositories
 echo.
 echo   General:
 echo   help                  Show this help
