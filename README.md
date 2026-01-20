@@ -77,6 +77,8 @@ Interactive container with Git, Python 3.13, and shell utilities for Git-based d
 | `gh-pr-cleanup` | Clean stale PRs and branches |
 | `gh-secrets-audit` | Audit secrets across repos |
 | `gh-labels-sync` | Sync labels between repos |
+| `gh-dependabot-labels` | Sync labels from dependabot.yml |
+| `gh-packages-cleanup` | Clean old package versions |
 | `gh-branch-protect` | Manage branch protection rules |
 
 #### Advanced Git Tools
@@ -178,6 +180,16 @@ Interactive container with Git, Python 3.13, and shell utilities for Git-based d
 ./devtools.sh gh-branch-protect myorg/repo --list
 ./devtools.sh gh-branch-protect myorg/repo main --preset strict
 ./devtools.sh gh-branch-protect --org myorg --branch main --preset standard
+
+# Sync dependabot labels across repos
+./devtools.sh gh-dependabot-labels                        # Dry run
+./devtools.sh gh-dependabot-labels --execute              # Create labels
+./devtools.sh gh-dependabot-labels --execute --cleanup    # Also remove old labels
+
+# Clean old package versions
+./devtools.sh gh-packages-cleanup                         # Dry run
+./devtools.sh gh-packages-cleanup --execute               # Delete old versions
+./devtools.sh gh-packages-cleanup -t container            # Only containers
 ```
 
 #### Mirror & Statistics Tools
@@ -224,6 +236,8 @@ Interactive container with Git, Python 3.13, and shell utilities for Git-based d
 - `gh-pr-cleanup.py` - Clean stale PRs and branches
 - `gh-secrets-audit.py` - Audit secrets across repos
 - `gh-labels-sync.py` - Sync labels between repos
+- `gh-dependabot-labels.py` - Sync labels from dependabot.yml
+- `gh-packages-cleanup.py` - Clean old package versions
 - `gh-branch-protection.py` - Manage branch protection rules
 
 **Pre-configured Git Aliases:**
@@ -308,6 +322,8 @@ DeveloperTools/
 │   │       ├── gh-pr-cleanup.py
 │   │       ├── gh-secrets-audit.py
 │   │       ├── gh-labels-sync.py
+│   │       ├── gh-dependabot-labels.py
+│   │       ├── gh-packages-cleanup.py
 │   │       ├── gh-branch-protection.py
 │   │       ├── git-mirror.sh
 │   │       ├── git-contributors.py
