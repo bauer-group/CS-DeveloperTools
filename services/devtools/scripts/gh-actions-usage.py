@@ -150,25 +150,52 @@ def get_org_runners(org: str) -> List[Dict]:
         return []
 
 
-def get_recent_workflow_summary(org: str, repos: List[Dict], days: int = 30) -> Dict:
-    """Get a quick summary of recent workflow activity."""
-    total_runs = 0
-    total_success = 0
-    total_failure = 0
-    active_repos = 0
+def get_org_workflow_runs(org: str, days: int = 30) -> List[Dict]:
+    """Get all workflow runs for organization (single API call)."""
+    since = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+    output = run_gh([
+        "api", f"/orgs/{org}/actions/runs",
+        "--paginate",
+        "-q", f".workflow_runs[] | select(.created_at >= \"{since}\") | {{repo: .repository.name, conclusion: .conclusion}}"
+    ])
+    if not output:
+        return []
 
-    for repo in repos[:50]:  # Limit to first 50 repos for speed
-        runs = get_workflow_runs(org, repo["name"], days)
-        if runs:
-            active_repos += 1
-            total_runs += len(runs)
-            total_success += len([r for r in runs if r.get("conclusion") == "success"])
-            total_failure += len([r for r in runs if r.get("conclusion") == "failure"])
+    runs = []
+    for line in output.strip().split('\n'):
+        if line:
+            try:
+                runs.append(json.loads(line))
+            except json.JSONDecodeError:
+                pass
+    return runs
+
+
+def get_recent_workflow_summary(org: str, repos: List[Dict], days: int = 30, show_progress: bool = False) -> Dict:
+    """Get a quick summary of recent workflow activity."""
+    if show_progress:
+        print(f"  Fetching workflow runs...", end="", flush=True)
+
+    # Single API call for all org runs
+    runs = get_org_workflow_runs(org, days)
+
+    if show_progress:
+        print("\r" + " " * 40 + "\r", end="")
+
+    if not runs:
+        return {"total_runs": 0, "success": 0, "failure": 0, "active_repos": 0}
+
+    # Count by conclusion
+    success = len([r for r in runs if r.get("conclusion") == "success"])
+    failure = len([r for r in runs if r.get("conclusion") == "failure"])
+
+    # Count unique repos with runs
+    active_repos = len(set(r.get("repo") for r in runs if r.get("repo")))
 
     return {
-        "total_runs": total_runs,
-        "success": total_success,
-        "failure": total_failure,
+        "total_runs": len(runs),
+        "success": success,
+        "failure": failure,
         "active_repos": active_repos
     }
 
@@ -317,11 +344,12 @@ Examples:
                 print()
         else:
             print(f"  {YELLOW}Could not fetch billing data{NC}")
+            print(f"  {DIM}(Requires org owner/billing manager role + admin:org scope){NC}")
             print()
 
         # Quick activity summary (always show)
         print(f"{BOLD}Recent Activity (last {args.days} days):{NC}")
-        summary = get_recent_workflow_summary(args.org, repos, args.days)
+        summary = get_recent_workflow_summary(args.org, repos, args.days, show_progress=True)
 
         if summary["total_runs"] > 0:
             success_rate = (summary["success"] / summary["total_runs"] * 100) if summary["total_runs"] > 0 else 0
