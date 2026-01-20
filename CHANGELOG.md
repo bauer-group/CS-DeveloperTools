@@ -1,3 +1,12 @@
+## [0.9.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.8.0...v0.9.0) (2026-01-20)
+
+### 🚀 Features
+
+* Add gh-dependabot-labels script to sync labels from dependabot.yml across organization repos ([c79cfde](https://github.com/bauer-group/CS-DeveloperTools/commit/c79cfde97b39f82138364961d67e9be11026e6e8))
+* Add scripts for managing GitHub webhooks, fixing author information, finding large files, and squashing Git history ([11e4322](https://github.com/bauer-group/CS-DeveloperTools/commit/11e43229b7c251f8658ad6add62659f371bc5777))
+* Enhance GitHub CLI authentication script with additional required scopes and access tests for organization settings and runners ([e98ccd3](https://github.com/bauer-group/CS-DeveloperTools/commit/e98ccd308f2f085e4cc753fd39fb47ded0ae10c6))
+* Refactor workflow summary to use single API call for organization workflow runs and improve performance ([ec17357](https://github.com/bauer-group/CS-DeveloperTools/commit/ec17357747e35e349e27e37405521c21e21f195d))
+
 ## [0.8.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.7.1...v0.8.0) (2026-01-17)
 
 ### 🚀 Features
