@@ -1,3 +1,9 @@
+## [0.11.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.11.0...v0.11.1) (2026-02-08)
+
+### 🐛 Bug Fixes
+
+* Correct prefix from IAS- to IAC- for Infrastructure as Code projects ([db41506](https://github.com/bauer-group/CS-DeveloperTools/commit/db415060e338556d1260635a4d127d1e96cb9f55))
+
 ## [0.11.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.10.0...v0.11.0) (2026-02-08)
 
 ### 🚀 Features
