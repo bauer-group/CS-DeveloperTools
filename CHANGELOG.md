@@ -1,3 +1,9 @@
+## [0.11.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.10.0...v0.11.0) (2026-02-08)
+
+### 🚀 Features
+
+* Update description for XPD- prefix and add IAS- prefix with corresponding labels and description ([893a4c9](https://github.com/bauer-group/CS-DeveloperTools/commit/893a4c970091bbb0a4a06ae1c302ed2c600a8c9a))
+
 ## [0.10.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.9.0...v0.10.0) (2026-01-26)
 
 ### 🚀 Features
