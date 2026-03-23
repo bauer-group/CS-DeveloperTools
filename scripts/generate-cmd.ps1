@@ -273,7 +273,8 @@ if errorlevel 1 call :build
 goto :eof
 "@
 
-# Write output file
-$cmdContent | Out-File -FilePath $OutputPath -Encoding ASCII -NoNewline
+# Write output file - CMD requires CRLF line endings
+$cmdContent = $cmdContent -replace "`r`n", "`n" -replace "`n", "`r`n"
+[System.IO.File]::WriteAllText($OutputPath, $cmdContent, [System.Text.Encoding]::ASCII)
 
 Write-Host "[OK] Generated $OutputPath with $($tools.Count) tools" -ForegroundColor Green
