@@ -1,3 +1,9 @@
+## [0.15.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.14.1...v0.15.0) (2026-03-26)
+
+### 🚀 Features
+
+* **devtools:** added support for native PowerShell scripts ([c16c7ba](https://github.com/bauer-group/CS-DeveloperTools/commit/c16c7ba90edf970f49c1995b1dca8098dc2e57ee))
+
 ## [0.14.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.14.0...v0.14.1) (2026-03-23)
 
 ### 🐛 Bug Fixes
