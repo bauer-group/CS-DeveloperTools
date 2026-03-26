@@ -1,3 +1,9 @@
+## [0.15.1](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.15.0...v0.15.1) (2026-03-26)
+
+### ♻️ Refactoring
+
+* **claude-backup:** migrated from PowerShell to Python ([a0b34ce](https://github.com/bauer-group/CS-DeveloperTools/commit/a0b34cea0a3ce9cfa762e79ffa23e31113780843))
+
 ## [0.15.0](https://github.com/bauer-group/CS-DeveloperTools/compare/v0.14.1...v0.15.0) (2026-03-26)
 
 ### 🚀 Features
