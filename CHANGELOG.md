@@ -1,3 +1,9 @@
+## [0.17.0](https://github.com/bauer-group/XPD-DeveloperTools/compare/v0.16.0...v0.17.0) (2026-04-25)
+
+### 🚀 Features
+
+* **gh:** added gh-secrets-sync tool ([d0fee7c](https://github.com/bauer-group/XPD-DeveloperTools/commit/d0fee7ce3a58b10d08088382fd4af8cb532e51fc))
+
 ## [0.16.0](https://github.com/bauer-group/XPD-DeveloperTools/compare/v0.15.1...v0.16.0) (2026-04-22)
 
 ### 🚀 Features
